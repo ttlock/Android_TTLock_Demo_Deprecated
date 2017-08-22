@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        applicationId "com.example.ttlock"
+        minSdkVersion 18
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            // 设置支持的 SO 库构架
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'//, 'mips', 'mips64'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    //添加本地仓库，并把libs目录作为仓库地址
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+}
+
+
+
+
+def supportVersion = "25.3.1"
+
+dependencies {
+    provided fileTree(include: ['*.jar'], dir: 'libs')
+//    compile fileTree(include: ['*.jar'], dir: 'libs')
+        compile "com.android.support:appcompat-v7:${supportVersion}"
+        compile "com.android.support:design:${supportVersion}"
+    compile "com.android.support:percent:${supportVersion}"
+    //ttlock SDK
+    compile(name: 'ttlock-sdk-2.0', ext: 'aar')
+    compile(name: 'ttlock-gateway-sdk-2.0', ext: 'aar')
+    //greenDao
+    // This is only needed if you want to use encrypted databases
+    //okhttp
+    //TODO:gson
+    compile project(path: ':pickerview')
+//    compile 'com.android.support:appcompat-v7:25.1.0'
+//    compile 'com.android.support:design:25.1.0'
+    compile 'org.greenrobot:greendao:3.1.1'
+    compile 'org.greenrobot:greendao-generator-encryption:2.2.0'
+    compile 'net.zetetic:android-database-sqlcipher:3.4.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'no.nordicsemi.android:dfu:1.1.1'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="keyboardPwd"
+            type="com.example.ttlock.model.KeyboardPwd" />
+        <import type="com.example.ttlock.utils.DateUitl" />
+    </data>
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="50dp">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:text="@{keyboardPwd.keyboardPwd}"/>
+        <TextView
+            android:id="@+id/deleteByGateway"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:text="通过网关删除"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/deleteByBle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/holo_red_light"
+            android:layout_height="50dp"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:text="通过蓝牙删除"/>
+        <TextView
+            android:padding="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:text="@{DateUitl.getTime(keyboardPwd.startDate) + @string/words_maohao + DateUitl.getTime(keyboardPwd.endDate)}"/>
+    </LinearLayout>
+</layout>

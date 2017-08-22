@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="gateway"
+            type="com.example.ttlock.model.Gateway" />
+    </data>
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="50dp">
+    <TextView
+        android:id="@+id/mac"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:text="@{gateway.gatewayMac}"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:text="@{@string/words_lock_num + String.valueOf(gateway.lockNum)}"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:text="@{gateway.isOnline ? @string/words_online : @string/words_offline}"/>
+    </LinearLayout>
+</layout>

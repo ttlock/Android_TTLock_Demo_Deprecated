@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="underGatewayLock"
+            type="com.example.ttlock.model.UnderGatewayLock" />
+    </data>
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="50dp">
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:text="@{underGatewayLock.lockName}"/>
+        <TextView
+            android:id="@+id/lockTime"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:text="读取锁时间"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/setTime"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/holo_red_light"
+            android:layout_height="50dp"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:text="校准锁时间"/>
+        <TextView
+            android:padding="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:text="@{String.valueOf(underGatewayLock.rssi)}"/>
+    </LinearLayout>
+</layout>

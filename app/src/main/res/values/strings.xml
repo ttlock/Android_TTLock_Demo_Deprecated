@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">TTLockDemo</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string-array name="operate">
+        <item>点击开门</item>
+        <item>设置管理码</item>
+        <item>设置清空码</item>
+        <item>设置锁时间</item>
+        <item>重置键盘密码</item>
+        <item>重置电子钥匙</item>
+        <item>重置锁</item>
+        <item>获取操作日志</item>
+        <item>获取锁时间</item>
+        <item>发送电子钥匙</item>
+        <item>获取密码</item>
+
+        <item>车位锁升(仅限车位锁)</item>
+        <item>车位锁降</item>
+        <item>固件升级</item>
+    </string-array>
+
+
+    <string-array name="pwd_type">
+        <item>永久</item>
+        <item>期限</item>
+        <item>循环</item>
+        <item>单次</item>
+    </string-array>
+
+    <string-array name="wheel_data">
+        <item>周未</item>
+        <item>每日</item>
+        <item>工作日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+        <item>周日</item>
+    </string-array>
+
+    <string name="words_online">在线</string>
+    <string name="words_offline">离线</string>
+    <string name="words_lock_num">网关管理锁数量:</string>
+
+    <string name="words_maohao"> - </string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_sure">确定</string>
+
+</resources>
