@@ -20,6 +20,7 @@ import com.example.ttlock.enumtype.Operation;
 import com.example.ttlock.model.BleSession;
 import com.example.ttlock.model.Key;
 import com.example.ttlock.net.ResponseService;
+import com.example.ttlock.sp.MyPreference;
 import com.ttlock.bl.sdk.util.LogUtil;
 
 import org.json.JSONException;
@@ -28,6 +29,9 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+
+import static com.example.ttlock.MyApplication.mTTLockAPI;
+import static com.example.ttlock.activity.MainActivity.curKey;
 
 public class OperateActivity extends BaseActivity {
 
@@ -43,6 +47,7 @@ public class OperateActivity extends BaseActivity {
     private Dialog dialog;
 
     private String[] operates;
+    private int openid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,54 +55,55 @@ public class OperateActivity extends BaseActivity {
 
         setContentView(R.layout.activity_operate);
         ButterKnife.bind(this);
-        mKey = MainActivity.curKey;
+        mKey = curKey;
         operates = getResources().getStringArray(R.array.operate);
         operateAdapter = new OperateAdapter(this, mKey, operates);
         listView.setAdapter(operateAdapter);
         bleSession = MyApplication.bleSession;
+        openid = MyPreference.getOpenid(this, MyPreference.OPEN_ID);
     }
 
     @OnItemClick(R.id.list)
     void onItemClick(int position) {
         switch (position) {
             case Operate.CLICK_TO_UNLOCK://点击开门
-                if(MyApplication.mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
+                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
                     if(mKey.isAdmin())
-                        MyApplication.mTTLockAPI.unlockByAdministrator(null, 0, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                     else
-                        MyApplication.mTTLockAPI.unlockByUser(null, 0, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                 } else {//未连接进行连接
                     showProgressDialog("等待连接");
-                    MyApplication.mTTLockAPI.connect(mKey.getLockMac());
+                    mTTLockAPI.connect(mKey.getLockMac());
                     bleSession.setOperation(Operation.CLICK_UNLOCK);
                     bleSession.setLockmac(mKey.getLockMac());
                 }
                 break;
             //后面两个操作是车位锁独有操作
             case Operate.LOCKCAR_UP://车位锁升
-                if(MyApplication.mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
+                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
                     if(mKey.isAdmin())
-                        MyApplication.mTTLockAPI.lockByAdministrator(null, 0, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr());
+                        mTTLockAPI.lockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr());
                     else
-                        MyApplication.mTTLockAPI.lockByUser(null, 0, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.lockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
 //                    MyApplication.mTTLockAPI.lockByUser(null, 0, mKey.getLockVersion(), 1489990922165l, 1490077322165l, mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                 } else {
                     showProgressDialog("等待连接");
-                    MyApplication.mTTLockAPI.connect(mKey.getLockMac());
+                    mTTLockAPI.connect(mKey.getLockMac());
                     bleSession.setOperation(Operation.LOCKCAR_UP);
                     bleSession.setLockmac(mKey.getLockMac());
                 }
                 break;
             case Operate.LOCKCAR_DOWN://车位锁降
-                if(MyApplication.mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
+                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
                     if(mKey.isAdmin())
-                        MyApplication.mTTLockAPI.unlockByAdministrator(null, 0, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                     else
-                        MyApplication.mTTLockAPI.unlockByUser(null, 0, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
 //                    MyApplication.mTTLockAPI.unlockByUser(null, 0, mKey.getLockVersion(), 1489990922165l, 1490077322165l, mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                 } else {
                     showProgressDialog("等待连接");
-                    MyApplication.mTTLockAPI.connect(mKey.getLockMac());
+                    mTTLockAPI.connect(mKey.getLockMac());
                     bleSession.setOperation(Operation.LOCKCAR_DOWN);
                     bleSession.setLockmac(mKey.getLockMac());
                 }
@@ -160,9 +166,14 @@ public class OperateActivity extends BaseActivity {
                 String content = contentView.getText().toString().trim();
                 switch (operate) {
                     case Operate.SET_ADMIN_CODE:
-                        bleSession.setOperation(Operation.SET_ADMIN_KEYBOARD_PASSWORD);
-                        bleSession.setPassword(content);
-                        bleSession.setLockmac(mKey.getLockMac());
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                            mTTLockAPI.setAdminKeyboardPassword(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr(), content);
+                        } else {
+                            mTTLockAPI.connect(mKey.getLockMac());
+                            bleSession.setOperation(Operation.SET_ADMIN_KEYBOARD_PASSWORD);
+                            bleSession.setPassword(content);
+                            bleSession.setLockmac(mKey.getLockMac());
+                        }
                         break;
                     case Operate.SET_DELETE_CODE:
                         bleSession.setOperation(Operation.SET_DELETE_PASSWORD);
@@ -170,28 +181,58 @@ public class OperateActivity extends BaseActivity {
                         bleSession.setLockmac(mKey.getLockMac());
                         break;
                     case Operate.SET_LOCK_TIME:
-                        bleSession.setOperation(Operation.SET_LOCK_TIME);
-                        bleSession.setLockmac(mKey.getLockMac());
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                            mTTLockAPI.setLockTime(null, openid, curKey.getLockVersion(), curKey.getUnlockKey(), System.currentTimeMillis(), curKey.getLockFlagPos(), curKey.getAesKeystr(), curKey.getTimezoneRawOffset());
+                        } else {
+                            mTTLockAPI.connect(mKey.getLockMac());
+                            bleSession.setOperation(Operation.SET_LOCK_TIME);
+                            bleSession.setLockmac(mKey.getLockMac());
+                        }
                         break;
                     case Operate.RESET_KEYBOARD_PASSWORD:
-                        bleSession.setOperation(Operation.RESET_KEYBOARD_PASSWORD);
-                        bleSession.setLockmac(mKey.getLockMac());
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                            mTTLockAPI.resetKeyboardPassword(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr());
+                        } else {
+                            mTTLockAPI.connect(mKey.getLockMac());
+                            bleSession.setOperation(Operation.RESET_KEYBOARD_PASSWORD);
+                            bleSession.setLockmac(mKey.getLockMac());
+                        }
                         break;
                     case Operate.RESET_EKEY:
-                        bleSession.setOperation(Operation.RESET_EKEY);
-                        bleSession.setLockmac(mKey.getLockMac());
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                            mTTLockAPI.resetEKey(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
+                        } else {
+                            mTTLockAPI.connect(mKey.getLockMac());
+                            bleSession.setOperation(Operation.RESET_EKEY);
+                            bleSession.setLockmac(mKey.getLockMac());
+                        }
                         break;
                     case Operate.RESET_LOCK:
-                        bleSession.setOperation(Operation.RESET_LOCK);
-                        bleSession.setLockmac(mKey.getLockMac());
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                            mTTLockAPI.resetLock(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
+                        } else {
+                            mTTLockAPI.connect(mKey.getLockMac());
+                            bleSession.setOperation(Operation.RESET_LOCK);
+                            bleSession.setLockmac(mKey.getLockMac());
+                        }
                         break;
                     case Operate.GET_OPERATE_LOG:
-                        bleSession.setOperation(Operation.GET_OPERATE_LOG);
-                        bleSession.setLockmac(mKey.getLockMac());
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                            mTTLockAPI.getOperateLog(null, curKey.getLockVersion(), curKey.getAesKeystr(), curKey.getTimezoneRawOffset());
+                        } else {
+                            mTTLockAPI.connect(mKey.getLockMac());
+                            bleSession.setOperation(Operation.GET_OPERATE_LOG);
+                            bleSession.setLockmac(mKey.getLockMac());
+                        }
                         break;
                     case Operate.GET_LOCK_TIME:
-                        bleSession.setOperation(Operation.GET_LOCK_TIME);
-                        bleSession.setLockmac(mKey.getLockMac());
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                            mTTLockAPI.getLockTime(null, curKey.getLockVersion(), curKey.getAesKeystr(), curKey.getTimezoneRawOffset());
+                        } else {
+                            mTTLockAPI.connect(mKey.getLockMac());
+                            bleSession.setOperation(Operation.GET_LOCK_TIME);
+                            bleSession.setLockmac(mKey.getLockMac());
+                        }
                         break;
                     case Operate.SEND_EKey:
                         new AsyncTask<String, String, String>() {

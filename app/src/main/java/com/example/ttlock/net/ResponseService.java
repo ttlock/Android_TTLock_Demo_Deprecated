@@ -14,8 +14,8 @@ import java.util.HashMap;
  */
 public class ResponseService {
     private static final String TAG = "ResponseService";
-//    private static String actionUrl = "https://api.ttlock.com.cn";
-    private static String actionUrl = "http://120.26.119.23:8085";
+    private static String actionUrl = "https://api.ttlock.com.cn";
+//    private static String actionUrl = "http://120.26.119.23:8085";
     private static String actionUrlV2 = actionUrl + "/v2";
     private static String actionUrlV3 = actionUrl + "/v3";
 
@@ -447,6 +447,23 @@ public class ResponseService {
         params.put("modelNum", deviceInfo.modelNum);
         params.put("hardwareRevision", deviceInfo.hardwareRevision);
         params.put("firmwareRevision", deviceInfo.firmwareRevision);
+        params.put("date", String.valueOf(System.currentTimeMillis()));
+        return OkHttpRequest.sendPost(url, params);
+    }
+
+    /**
+     * 上传操作日志
+     * @param lockId
+     * @param records
+     * @return
+     */
+    public static String uploadOperateLog(int lockId, String records) {
+        String url = actionUrlV3 + "/lockRecord/upload";
+        HashMap params = new HashMap();
+        params.put("clientId", Config.CLIENT_ID);
+        params.put("accessToken", MyPreference.getStr(MyApplication.mContext, MyPreference.ACCESS_TOKEN));
+        params.put("lockId", String.valueOf(lockId));
+        params.put("records", records);
         params.put("date", String.valueOf(System.currentTimeMillis()));
         return OkHttpRequest.sendPost(url, params);
     }

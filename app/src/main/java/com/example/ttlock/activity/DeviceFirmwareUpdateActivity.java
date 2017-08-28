@@ -1,5 +1,6 @@
 package com.example.ttlock.activity;
 
+import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
     private int checkNum = 0;
     private Key mKey;
     private FirmwareInfo firmwareInfo;
+
+    private ProgressDialog progressDialog;
 
     /**
      * 再次检测
@@ -60,6 +63,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
                             break;
                         case DeviceFirmwareUpdateApi.UpgradeOprationUpgrading:
                             binding.status.setText("升级中");
+                            progressDialog = new ProgressDialog(DeviceFirmwareUpdateActivity.this);
                             break;
                         case DeviceFirmwareUpdateApi.UpgradeOprationRecovering:
                             binding.status.setText("恢复中");
@@ -83,6 +87,28 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
         @Override
         public void onProgressChanged(final String deviceAddress, final int percent, final float speed, final float avgSpeed, final int currentPart, final int partsTotal) {
             LogUtil.e("percent:" + percent, DBG);
+            cancelProgressDialog();
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMax(100);
+            progressDialog.setProgress(percent);
+            progressDialog.show();
+        }
+
+        @Override
+        public void onDfuProcessStarting(final String deviceAddress) {
+            LogUtil.d("deviceAddress:" + deviceAddress, DBG);
+        }
+
+        @Override
+        public void onEnablingDfuMode(final String deviceAddress) {
+            LogUtil.d("deviceAddress:" + deviceAddress, DBG);
+        }
+
+        @Override
+        public void onDfuCompleted(final String deviceAddress) {
+            LogUtil.d("deviceAddress:" + deviceAddress, DBG);
+            progressDialog.cancel();
+            showProgressDialog("恢复中");
         }
 
         @Override
@@ -106,6 +132,10 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_device_firmware_update);
         mKey = curKey;
+        /**
+         * 停掉蓝牙扫描
+         */
+        MyApplication.mTTLockAPI.stopBTDeviceScan();
         deviceFirmwareUpdateApi = new DeviceFirmwareUpdateApi(this, MyApplication.mTTLockAPI, deviceFirmwareUpdateCallback);
     }
 
@@ -245,5 +275,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         deviceFirmwareUpdateApi.abortUpgradeProcess();
+        //重新开启扫描
+        MyApplication.mTTLockAPI.startBTDeviceScan();
     }
 }
