@@ -1,9 +1,9 @@
 package com.example.ttlock.dao;
 
 import com.example.ttlock.MyApplication;
-import com.example.ttlock.model.DaoSession;
+import com.example.ttlock.dao.gen.DaoSession;
+import com.example.ttlock.dao.gen.KeyDao;
 import com.example.ttlock.model.Key;
-import com.example.ttlock.model.KeyDao;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 

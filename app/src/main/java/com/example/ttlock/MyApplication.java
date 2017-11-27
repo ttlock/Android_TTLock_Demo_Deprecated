@@ -14,6 +14,9 @@ import com.example.ttlock.activity.BaseActivity;
 import com.example.ttlock.activity.MainActivity;
 import com.example.ttlock.constant.BleConstant;
 import com.example.ttlock.dao.DbService;
+import com.example.ttlock.dao.gen.DaoMaster;
+import com.example.ttlock.dao.gen.DaoSession;
+import com.example.ttlock.dao.gen.KeyDao;
 import com.example.ttlock.enumtype.Operation;
 import com.example.ttlock.model.BleSession;
 import com.example.ttlock.model.Key;
@@ -323,6 +326,7 @@ public class MyApplication extends Application {
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
 
+
         @Override
         public void onSetLockTime(ExtendedBluetoothDevice extendedBluetoothDevice, Error error) {
             if(error == Error.SUCCESS) {
@@ -589,6 +593,7 @@ public class MyApplication extends Application {
         public void onSearchPasscodeParam(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, long l, Error error) {
 
         }
+
     };
 
     ActivityLifecycleCallbacks callbacks = new ActivityLifecycleCallbacks() {

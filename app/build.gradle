@@ -41,6 +41,12 @@ android {
         }
     }
 
+    greendao {
+        schemaVersion 1
+        daoPackage 'com.example.ttlock.dao.gen'
+        targetGenDir 'src/main/java'
+    }
+
 }
 
 
