@@ -50,7 +50,7 @@ public class GatewayActivity extends BaseActivity {
         userPwd = binding.userPwd.getText().toString().trim();
 
         if(TextUtils.isEmpty(wifiPwd) || TextUtils.isEmpty(wifiName) || TextUtils.isEmpty(userPwd)) {
-            Toast.makeText(this, "内容不能为空", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.words_check_input), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -73,7 +73,7 @@ public class GatewayActivity extends BaseActivity {
                             @Override
                             public void onConnectTimeOut() {
                                 cancelProgressDialog();
-                                toast("连接超时");
+                                toast(getString(R.string.words_time_out));
                             }
 
                             @Override
@@ -88,7 +88,7 @@ public class GatewayActivity extends BaseActivity {
                                         String errmsg = jsonObject.getString("errmsg");
                                         toast(errmsg);
                                     } else {
-                                        toast("网关初始化成功");
+                                        toast(getString(R.string.words_gateway_init_successed));
                                         Intent intent = new Intent(GatewayActivity.this, GatewayListActivity.class);
                                         startActivity(intent);
                                     }

@@ -92,7 +92,7 @@ public class GatewayListActivity extends BaseActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, 0, 0, "删除");
+        menu.add(0, 0, 0, getString(R.string.words_delete));
     }
 
     @Override
@@ -118,7 +118,7 @@ public class GatewayListActivity extends BaseActivity {
                         toast(errmsg);
                     } else {
                         gateways.remove(position);
-                        toast("网关删除成功");
+                        toast(getString(R.string.words_gateway_delete_successed));
                         gatewayListAdapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {

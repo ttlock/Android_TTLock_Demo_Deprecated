@@ -59,20 +59,20 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
                 public void run() {
                     switch (status) {
                         case DeviceFirmwareUpdateApi.UpgradeOprationPreparing:
-                            binding.status.setText("准备中");
+                            binding.status.setText(getString(R.string.words_preparing));
                             break;
                         case DeviceFirmwareUpdateApi.UpgradeOprationUpgrading:
-                            binding.status.setText("升级中");
+                            binding.status.setText(getString(R.string.words_upgrading));
                             progressDialog = new ProgressDialog(DeviceFirmwareUpdateActivity.this);
                             break;
                         case DeviceFirmwareUpdateApi.UpgradeOprationRecovering:
-                            binding.status.setText("恢复中");
+                            binding.status.setText(getString(R.string.words_recovering));
                             break;
                         case DeviceFirmwareUpdateApi.UpgradeOprationSuccess:
                             deviceFirmwareUpdateApi.upgradeComplete();
                             cancelProgressDialog();
-                            binding.status.setText("升级成功");
-                            toast("升级成功");
+                            binding.status.setText(getString(R.string.words_upgrade_successed));
+                            toast(getString(R.string.words_upgrade_successed));
                             break;
                     }
                 }
@@ -108,7 +108,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
         public void onDfuCompleted(final String deviceAddress) {
             LogUtil.d("deviceAddress:" + deviceAddress, DBG);
             progressDialog.cancel();
-            showProgressDialog("恢复中");
+            showProgressDialog(getString(R.string.words_recovering));
         }
 
         @Override
@@ -120,7 +120,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
                 @Override
                 public void run() {
                     cancelProgressDialog();
-                    binding.status.setText("升级失败");
+                    binding.status.setText(getString(R.string.words_upgrade_failed));
                     showRetryDialog();
                 }
             });
@@ -169,18 +169,18 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
                 if(firmwareInfo.errcode == 0) {
                     switch (firmwareInfo.needUpgrade) {
                         case 0://不需要升级
-                            binding.status.setText("已是最新版本");
+                            binding.status.setText(getString(R.string.is_the_lastest_version));
                             binding.version.setText(firmwareInfo.version);
                             break;
                         case 1://需要升级
-                            binding.status.setText("有新版本");
+                            binding.status.setText(getString(R.string.new_version_found));
                             binding.version.setText(firmwareInfo.version);
                             showUpgradeDialog();
                             //TODO:弹出升级对话框
                             break;
                         case 2://版本信息未知
-                            binding.status.setText("版本信息未知");
-                            binding.version.setText("版本信息未知");
+                            binding.status.setText(getString(R.string.unknown_lock_version));
+                            binding.version.setText(getString(R.string.unknown_lock_version));
                             showGetLockFirmwareDialog();
                             break;
                     }
@@ -206,18 +206,18 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
                 if(firmwareInfo.errcode == 0) {
                     switch (firmwareInfo.needUpgrade) {
                         case 0://不需要升级
-                            binding.status.setText("已是最新版本");
+                            binding.status.setText(getString(R.string.is_the_lastest_version));
                             binding.version.setText(firmwareInfo.version);
                             break;
                         case 1://需要升级
-                            binding.status.setText("有新版本");
+                            binding.status.setText(getString(R.string.new_version_found));
                             binding.version.setText(firmwareInfo.version);
                             showUpgradeDialog();
                             //TODO:弹出升级对话框
                             break;
                         case 2://版本信息未知
-                            binding.status.setText("版本信息未知");
-                            binding.version.setText("版本信息未知");
+                            binding.status.setText(getString(R.string.unknown_lock_version));
+                            binding.version.setText(getString(R.string.unknown_lock_version));
                             showGetLockFirmwareDialog();
 //                            checkAgain = true;
                             break;
@@ -232,7 +232,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
     public void showGetLockFirmwareDialog() {
         final MultiButtonDialog dialog = new MultiButtonDialog(this);
         dialog.show();
-        dialog.setContentText("是否获取锁固件信息");
+        dialog.setContentText(getString(R.string.words_is_read_device_info));
         dialog.setPositiveClickListener(new MultiButtonDialog.PositiveClickListener() {
             @Override
             public void onPositiveClick(String inputContent) {
@@ -245,7 +245,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
     public void showRetryDialog() {
         final MultiButtonDialog dialog = new MultiButtonDialog(this);
         dialog.show();
-        dialog.setContentText("是否重试");
+        dialog.setContentText(getString(R.string.words_is_retry));
         dialog.setPositiveClickListener(new MultiButtonDialog.PositiveClickListener() {
             @Override
             public void onPositiveClick(String inputContent) {
@@ -259,7 +259,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
     public void showUpgradeDialog() {
         final MultiButtonDialog dialog = new MultiButtonDialog(this);
         dialog.show();
-        dialog.setContentText("是否进行升级");
+        dialog.setContentText(getString(R.string.words_is_upgrade));
         dialog.setPositiveClickListener(new MultiButtonDialog.PositiveClickListener() {
             @Override
             public void onPositiveClick(String inputContent) {

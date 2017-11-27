@@ -16,10 +16,7 @@ import com.example.ttlock.constant.BleConstant;
 import com.example.ttlock.dao.DbService;
 import com.example.ttlock.enumtype.Operation;
 import com.example.ttlock.model.BleSession;
-import com.example.ttlock.model.DaoMaster;
-import com.example.ttlock.model.DaoSession;
 import com.example.ttlock.model.Key;
-import com.example.ttlock.model.KeyDao;
 import com.example.ttlock.myInterface.OperateCallback;
 import com.example.ttlock.net.ResponseService;
 import com.example.ttlock.sp.MyPreference;
@@ -221,7 +218,7 @@ public class MyApplication extends Application {
                 key.setHardwareRevision(hardwareRevision);
                 key.setFirmwareRevision(firmwareRevision);
 
-                toast("锁添加成功，正在上传服务端进行初始化操作");
+                toast(getString(R.string.words_lock_add_successed_and_init));
 
                 new AsyncTask<Void, String, Boolean>() {
 
@@ -240,11 +237,11 @@ public class MyApplication extends Application {
                                 startActivity(intent);
 
                                 flag = true;
-                                toast("锁服务端初始化成功");
+                                toast(getString(R.string.words_lock_init_successed));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            toast("锁服务端初始化失败:" + e.getMessage());
+                            toast(getString(R.string.words_lock_init_failed) + e.getMessage());
                         }
                         return flag;
                     }
@@ -265,7 +262,7 @@ public class MyApplication extends Application {
 //                operateSuccess = true;
                 curKey.setLockFlagPos(lockFlagPos);
                 DbService.updateKey(curKey);
-                toast("重置电子钥匙成功，锁标志位:" + lockFlagPos);
+                toast(getString(R.string.words_lock_flag_pos) + lockFlagPos);
                 new AsyncTask<Void, Void, String>() {
 
                     @Override
@@ -278,11 +275,11 @@ public class MyApplication extends Application {
                                 String errmsg = jsonObject.getString("description");
                                 toast(errmsg);
                             } else {
-                                toast("锁标志位上传服务器成功");
+                                toast(getString(R.string.words_lock_flag_upload_successed));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            toast("锁标志位上传服务器失败:" + e.getMessage());
+                            toast(getString(R.string.words_lock_flag_upload_failed) + e.getMessage());
                         }
                         return json;
                     }
@@ -302,7 +299,7 @@ public class MyApplication extends Application {
 //                operateSuccess = true;
                 curKey.setAdminKeyboardPwd(adminCode);
                 DbService.updateKey(curKey);
-                toast("设置管理码成功:" + adminCode);
+                toast(getString(R.string.words_set_admin_code_successed) + adminCode);
             } else toast(error.getErrorMsg());
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
@@ -313,7 +310,7 @@ public class MyApplication extends Application {
 //                operateSuccess = true;
                 curKey.setDeletePwd(deleteCode);
                 DbService.updateKey(curKey);
-                toast("设置清空码成功:" + deleteCode);
+                toast(getString(R.string.words_set_delete_code_successed) + deleteCode);
             } else toast(error.getErrorMsg());
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
@@ -321,17 +318,7 @@ public class MyApplication extends Application {
         @Override
         public void onUnlock(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, int uniqueid, long lockTime, Error error) {
             if(error == Error.SUCCESS) {
-//                operateSuccess = true;
-                toast("开门成功");
-            } else toast(error.getErrorMsg());
-            ((BaseActivity)curActivity).cancelProgressDialog();
-        }
-
-        @Override
-        public void onLock(ExtendedBluetoothDevice extendedBluetoothDevice, int uniqueid, Error error) {
-            if(error == Error.SUCCESS) {
-//                operateSuccess = true;
-                toast("关锁成功");
+                toast(getString(R.string.words_unlock_successed));
             } else toast(error.getErrorMsg());
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
@@ -339,8 +326,7 @@ public class MyApplication extends Application {
         @Override
         public void onSetLockTime(ExtendedBluetoothDevice extendedBluetoothDevice, Error error) {
             if(error == Error.SUCCESS) {
-                toast("设置锁时间成功");
-//                operateSuccess = true;
+                toast(getString(R.string.words_set_lock_time_successed));
             } else toast(error.getErrorMsg());
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
@@ -351,7 +337,7 @@ public class MyApplication extends Application {
 //                operateSuccess = true;
                 //转换成锁时区时间
                 String time = DateUitl.getTime(lockTime - TimeZone.getDefault().getOffset(System.currentTimeMillis()) + curKey.getTimezoneRawOffset(), "yyyy:MM:dd HH:mm");
-                toast("当前锁时区时间:" + time);
+                toast(String.format(getString(R.string.words_lock_time), time));
             } else toast(error.getErrorMsg());
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
@@ -403,8 +389,7 @@ public class MyApplication extends Application {
         @Override
         public void onResetLock(ExtendedBluetoothDevice extendedBluetoothDevice, Error error) {
             if(error == Error.SUCCESS) {
-//                operateSuccess = true;
-                toast("锁重置成功，当前钥匙已失效");
+                toast(getString(R.string.words_lock_reset_key_invalid));
             } else toast(error.getErrorMsg());
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
@@ -422,7 +407,7 @@ public class MyApplication extends Application {
         @Override
         public void onDeleteOneKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int keyboardPwdTypei, String deletedPwd, Error error) {
             if(error == Error.SUCCESS) {
-                toast("通过蓝牙删除密码成功");
+                toast(getString(R.string.words_delete_password_successed));
                 if(operateCallback != null)
                     operateCallback.onSuccess();
             } else toast(error.getErrorMsg());
@@ -447,7 +432,7 @@ public class MyApplication extends Application {
                                 JSONObject jsonObject = new JSONObject(json);
                                 int errcode = jsonObject.getInt("errcode");
                                 if(errcode == 0) {
-                                    msg = "上传操作日志成功";
+                                    msg = getString(R.string.words_upload_log_successed);
                                 } else msg = jsonObject.getString("errmsg");
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -462,7 +447,7 @@ public class MyApplication extends Application {
                         toast(msg);
                     }
                 }.execute();
-                toast("操作日志:" + records);
+                toast(getString(R.string.words_log) + records);
             } else toast(error.getErrorMsg());
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
@@ -513,7 +498,17 @@ public class MyApplication extends Application {
         }
 
         @Override
+        public void onAddFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, long l, int i2, Error error) {
+
+        }
+
+        @Override
         public void onFingerPrintCollection(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+
+        }
+
+        @Override
+        public void onFingerPrintCollection(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, Error error) {
 
         }
 
@@ -553,13 +548,16 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onSearchBicycleStatus(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, Error error) {
+        public void onGetLockSwitchState(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, Error error) {
 
         }
 
         @Override
-        public void onLock(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, long l, Error error) {
-
+        public void onLock(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int uid, int uniqueid, long lockTime, Error error) {
+            if(error == Error.SUCCESS) {
+                toast(getString(R.string.words_lock_successed));
+            } else toast(error.getErrorMsg());
+            ((BaseActivity)curActivity).cancelProgressDialog();
         }
 
         @Override
@@ -569,6 +567,26 @@ public class MyApplication extends Application {
 
         @Override
         public void onRecoveryData(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+
+        }
+
+        @Override
+        public void onSearchICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, Error error) {
+
+        }
+
+        @Override
+        public void onSearchFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, Error error) {
+
+        }
+
+        @Override
+        public void onSearchPasscode(ExtendedBluetoothDevice extendedBluetoothDevice, String s, Error error) {
+
+        }
+
+        @Override
+        public void onSearchPasscodeParam(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, long l, Error error) {
 
         }
     };

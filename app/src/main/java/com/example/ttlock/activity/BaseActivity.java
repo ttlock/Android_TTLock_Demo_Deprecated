@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.ttlock.MyApplication;
+import com.example.ttlock.R;
 import com.ttlock.bl.sdk.util.LogUtil;
 
 public class BaseActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class BaseActivity extends AppCompatActivity {
 //            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 //        }
 //        progressDialog.show();
-        showProgressDialog("请稍后");
+        showProgressDialog(getString(R.string.words_wait));
     }
 
     public void showProgressDialog(final String msg) {

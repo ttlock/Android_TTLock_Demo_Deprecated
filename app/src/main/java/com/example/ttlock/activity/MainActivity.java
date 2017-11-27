@@ -167,13 +167,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if(curKey.isAdmin()) {
             Intent intent = new Intent(this, OperateActivity.class);
             startActivity(intent);
-        } else toast("非管理员");
+        } else toast(getString(R.string.words_not_admin));
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, 0, 0, "删除");
+        menu.add(0, 0, 0, getString(R.string.words_delete));
 //        menu.setHeaderTitle(R.string.words_lock);
     }
 
@@ -208,7 +208,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     try {
                         JSONObject jsonObject = new JSONObject(json);
                         if(jsonObject.getInt("errcode") == 0) {
-                            msg = "钥匙删除成功";
+                            msg = getString(R.string.words_delete_ekey_successed);
                         } else msg = jsonObject.getString("description");
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -8,50 +8,92 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="operate">
-        <item>点击开门</item>
-        <item>设置管理码</item>
-        <item>设置清空码</item>
-        <item>设置锁时间</item>
-        <item>重置键盘密码</item>
-        <item>重置电子钥匙</item>
-        <item>重置锁</item>
-        <item>获取操作日志</item>
-        <item>获取锁时间</item>
-        <item>发送电子钥匙</item>
-        <item>获取密码</item>
+        <item>Click Unlock</item>
+        <item>Set Admin Code</item>
+        <item>Set Erase-all Code</item>
+        <item>Set Lock Time</item>
+        <item>Reset Password</item>
+        <item>Reset EKey</item>
+        <item>Reset Lock</item>
+        <item>Read Lock Log</item>
+        <item>Read Lock Time</item>
+        <item>Send e-Key</item>
+        <item>Get Password</item>
 
-        <item>车位锁升(仅限车位锁)</item>
-        <item>车位锁降</item>
-        <item>固件升级</item>
+        <item>Pad Lock Up(Only Pad Lock)</item>
+        <item>Pad Lock Down</item>
+        <item>Device Firmware Upgrade</item>
     </string-array>
 
 
     <string-array name="pwd_type">
-        <item>永久</item>
-        <item>期限</item>
-        <item>循环</item>
-        <item>单次</item>
+        <item>Permanent</item>
+        <item>Period</item>
+        <item>Cyclic</item>
+        <item>Once</item>
     </string-array>
 
     <string-array name="wheel_data">
-        <item>周未</item>
-        <item>每日</item>
-        <item>工作日</item>
-        <item>周一</item>
-        <item>周二</item>
-        <item>周三</item>
-        <item>周四</item>
-        <item>周五</item>
-        <item>周六</item>
-        <item>周日</item>
+        <item>Weekend</item>
+        <item>Daily</item>
+        <item>Workday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
     </string-array>
 
-    <string name="words_online">在线</string>
-    <string name="words_offline">离线</string>
-    <string name="words_lock_num">网关管理锁数量:</string>
+    <string name="words_online">Online</string>
+    <string name="words_offline">Offline</string>
+    <string name="words_lock_num">Count:</string>
 
     <string name="words_maohao"> - </string>
-    <string name="dialog_cancel">取消</string>
-    <string name="dialog_sure">确定</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_sure">OK</string>
+
+    <string name="words_unlock_successed">Unlock successfully!</string>
+    <string name="words_lock_successed">Lock successfully!</string>
+    <string name="words_set_lock_time_successed">Set lock time successed</string>
+    <string name="words_lock_time">Lock time:%1$s</string>
+    <string name="words_lock_reset_key_invalid">This lock has been reset，the key </string>
+    <string name="words_lock_init_successed">Lock init successed</string>
+    <string name="words_lock_init_failed">Lock init failed</string>
+    <string name="words_lock_add_successed_and_init">Lock add successed and uploading data</string>
+    <string name="words_lock_flag_pos">Reset e-key successed，flag:</string>
+    <string name="words_lock_flag_upload_successed">Lock flag position upload successed</string>
+    <string name="words_lock_flag_upload_failed">Lock flag position upload failed</string>
+    <string name="words_set_admin_code_successed">Set admin code successed:</string>
+    <string name="words_set_delete_code_successed">Set erase-all code successed:</string>
+    <string name="words_delete_password_successed">Delete password via bluetooth successed</string>
+    <string name="words_upload_log_successed">Upload log successed</string>
+    <string name="words_log">Log:</string>
+    <string name="words_delete">Delete</string>
+    <string name="words_not_admin">Not Admin</string>
+    <string name="words_delete_ekey_successed">delete key successed</string>
+    <string name="words_wait">waiting...</string>
+    <string name="words_input_admin_code">input admin code</string>
+    <string name="words_input_clear_code">input erase-all code</string>
+    <string name="words_input_time">input time</string>
+    <string name="words_input_receiver_name">input receiver account, default sent permanent key</string>
+    <string name="words_preparing">Preparing</string>
+    <string name="words_upgrading">Updating now</string>
+    <string name="words_recovering">Restoring</string>
+    <string name="words_upgrade_successed">Upgrade successed</string>
+    <string name="words_upgrade_failed">Upgrade failed</string>
+
+    <string name="is_the_lastest_version">No updates</string>
+    <string name="new_version_found">New version found</string>
+    <string name="unknown_lock_version">Unknown lock version</string>
+    <string name="words_is_read_device_info">Read Device Firmware Information?</string>
+    <string name="words_is_retry">Retry?</string>
+    <string name="words_is_upgrade">Upgrade?</string>
+    <string name="words_check_input">Must not be null!</string>
+    <string name="words_time_out">Time out</string>
+    <string name="words_gateway_init_successed">Gateway init successed</string>
+    <string name="words_gateway_delete_successed">Gateway delete successed</string>
+    <string name="words_authorize_successed">Authorize successed</string>
 
 </resources>

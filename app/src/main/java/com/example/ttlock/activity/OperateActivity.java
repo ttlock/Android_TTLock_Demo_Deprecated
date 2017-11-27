@@ -73,7 +73,7 @@ public class OperateActivity extends BaseActivity {
                     else
                         mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                 } else {//未连接进行连接
-                    showProgressDialog("等待连接");
+                    showProgressDialog(getString(R.string.words_wait));
                     mTTLockAPI.connect(mKey.getLockMac());
                     bleSession.setOperation(Operation.CLICK_UNLOCK);
                     bleSession.setLockmac(mKey.getLockMac());
@@ -88,7 +88,7 @@ public class OperateActivity extends BaseActivity {
                         mTTLockAPI.lockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
 //                    MyApplication.mTTLockAPI.lockByUser(null, 0, mKey.getLockVersion(), 1489990922165l, 1490077322165l, mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                 } else {
-                    showProgressDialog("等待连接");
+                    showProgressDialog(getString(R.string.words_wait));
                     mTTLockAPI.connect(mKey.getLockMac());
                     bleSession.setOperation(Operation.LOCKCAR_UP);
                     bleSession.setLockmac(mKey.getLockMac());
@@ -102,7 +102,7 @@ public class OperateActivity extends BaseActivity {
                         mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
 //                    MyApplication.mTTLockAPI.unlockByUser(null, 0, mKey.getLockVersion(), 1489990922165l, 1490077322165l, mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                 } else {
-                    showProgressDialog("等待连接");
+                    showProgressDialog(getString(R.string.words_wait));
                     mTTLockAPI.connect(mKey.getLockMac());
                     bleSession.setOperation(Operation.LOCKCAR_DOWN);
                     bleSession.setLockmac(mKey.getLockMac());
@@ -129,18 +129,18 @@ public class OperateActivity extends BaseActivity {
         switch (operate) {
             case Operate.SET_ADMIN_CODE:
 //                title = "设置管理码";
-                hit = "请输入管理码";
+                hit = getString(R.string.words_input_admin_code);
                 break;
             case Operate.SET_DELETE_CODE:
 //                title = "设置清空码";
-                hit = "请输入清空码";
+                hit = getString(R.string.words_input_clear_code);
                 break;
             case Operate.SET_LOCK_TIME:
 //                title = "设置锁时间";
-                hit = "传入要设置时间戳(默认使用手机时间)";
+                hit = getString(R.string.words_input_time);
                 break;
             case Operate.SEND_EKey:
-                hit = "请输入接收者的用户名,默认发送永久钥匙";
+                hit = getString(R.string.words_input_receiver_name);
                 break;
             default:
                 contentView.setVisibility(View.GONE);
@@ -161,7 +161,7 @@ public class OperateActivity extends BaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 if(operate >= Operate.SET_ADMIN_CODE && operate <= Operate.GET_LOCK_TIME)
-                    showProgressDialog("等待连接");
+                    showProgressDialog(getString(R.string.words_wait));
                 else showProgressDialog();
                 String content = contentView.getText().toString().trim();
                 switch (operate) {

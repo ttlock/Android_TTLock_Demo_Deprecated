@@ -50,7 +50,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             protected void onPostExecute(String json) {
-                String msg = "授权成功";
+                String msg = getString(R.string.words_authorize_successed);
                 try {
                     JSONObject jsonObject = new JSONObject(json);
                     if(jsonObject.has("errcode")) {
