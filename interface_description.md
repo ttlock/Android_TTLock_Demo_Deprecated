@@ -33,15 +33,15 @@ long timezoneOffset                               (传入-1不考虑偏移量，
 10. public void addAdministrator(ExtendedBluetoothDevice extendedBluetoothDevice)</br>
 添加管理员   Add Administrator
 11. public void setAdminKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, String lockVersion, String adminPs, String unlockKey, int lockFlagPos, String aesKeyStr, String password) </br>
-设置管理员键盘密码       Set Admin Keyboard Password
+设置管理员键盘密码       Set Admin Keyboard Password</br>
 12_1. public void unlockByAdministrator(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, String lockVersion, String adminPs, String unlockKey, int lockFlagPos, long unlockDate, String aesKeyStr, long timezoneOffset) </br>
-管理员开门(车位锁降)             Admin Unlock(Pad Lock Down)
+管理员开门(车位锁降)             Admin Unlock(Pad Lock Down)</br>
 12_2. public void lockByAdministrator(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, String lockVersion, String adminPs, String unlockKey, int lockFlagPos, String aesKeyStr) </br>
-管理员 车位锁升起               Pad Lock Up                    
+管理员 车位锁升起               Pad Lock Up</br>
 13_1. public void unlockByUser(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, String lockVersion, long startDate, long endDate, String unlockKey, int lockFlagPos, String aesKeyStr, long timezoneOffset) </br>
- 电子钥匙开门(车位锁降)          Ekey Unlock(Pad Lock Down)
- 13_2. public void unlockByUser(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, String lockVersion, long startDate, long endDate, String unlockKey, int lockFlagPos, String aesKeyStr, long timezoneOffset) </br>
-普通用户 车位锁升起               Pad Lock Up
+ 电子钥匙开门(车位锁降)          Ekey Unlock(Pad Lock Down)</br>
+13_2. public void lockByUser(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, String lockVersion, long startDate, long endDate, String unlockKey, int lockFlagPos, String aesKeyStr, long timezoneOffset) </br>
+普通用户 车位锁升起               Pad Lock Up</br>
  14. public void setLockTime(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, String lockVersion, String unlockKey, long date, int lockFlagPos, String aesKeyStr, long timezoneOffset) </br>
  校准时间            Set Lock Time</br>
  date   需要校准的时间(传入时间毫秒数)
