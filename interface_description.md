@@ -81,6 +81,7 @@ long timezoneOffset                               (传入-1不考虑偏移量，
  
  23. public void modifyKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int uid, String lockVersion, String adminPs, String unlockKey, int lockFlagPos, int keyboardPwdType, String originalPwd, String newPwd, long startDate, long endDate, String aesKeyStr, long timezoneOffset) </br>
 修改键盘密码         Modify Password </br>
+keyboardPwdType               键盘密码类型(目前不要求，可以传0)</br>
 originalPwd                   原始密码</br>
 newPwd                        新密码(传null或者空字符串表示不修改密码)</br>
 startDate                     开始时间(时间戳 long类型  传<=0表示不修改时间)</br>
