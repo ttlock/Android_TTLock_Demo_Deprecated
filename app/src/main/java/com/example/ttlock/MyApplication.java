@@ -145,7 +145,7 @@ public class MyApplication extends Application {
                     mTTLockAPI.resetEKey(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
                     break;
                 case RESET_LOCK://重置锁
-                    mTTLockAPI.resetLock(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
+                    mTTLockAPI.resetLock(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr());
                     break;
                 case GET_OPERATE_LOG://获取操作日志
                     mTTLockAPI.getOperateLog(extendedBluetoothDevice, curKey.getLockVersion(), curKey.getAesKeystr(), localKey.getTimezoneRawOffset());
@@ -215,7 +215,7 @@ public class MyApplication extends Application {
                 key.setAesKeystr(aesKeystr);
                 key.setSpecialValue(feature);
 
-                //获取当前时区偏移量 可以传入-1 不考虑时区问题
+                //获取当前时区偏移量
                 key.setTimezoneRawOffset(TimeZone.getDefault().getOffset(System.currentTimeMillis()));
                 key.setModelNumber(modelNumber);
                 key.setHardwareRevision(hardwareRevision);
@@ -591,6 +591,11 @@ public class MyApplication extends Application {
 
         @Override
         public void onSearchPasscodeParam(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, long l, Error error) {
+
+        }
+
+        @Override
+        public void onOperateRemoteUnlockSwitch(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, int i3, Error error) {
 
         }
 

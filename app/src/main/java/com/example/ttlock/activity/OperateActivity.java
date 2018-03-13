@@ -199,18 +199,18 @@ public class OperateActivity extends BaseActivity {
                         }
                         break;
                     case Operate.RESET_EKEY:
-                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {//如果当前处于连接状态，则直接发送重置钥匙指令
                             mTTLockAPI.resetEKey(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
-                        } else {
+                        } else {//主动连接锁 并设置操作标志
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.RESET_EKEY);
                             bleSession.setLockmac(mKey.getLockMac());
                         }
                         break;
                     case Operate.RESET_LOCK:
-                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {//如果当前处于连接状态，则直接发送重置锁指令
                             mTTLockAPI.resetLock(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
-                        } else {
+                        } else {//主动连接锁 并设置操作标志
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.RESET_LOCK);
                             bleSession.setLockmac(mKey.getLockMac());
