@@ -8,7 +8,7 @@ public class Config {
     public static final String  CLIENT_ID = "7946f0d923934a61baefb3303de4d132";
     public static final String  CLIENT_SECRET = "56d9721abbc3d22a58452c24131a5554";
     //更新为注册设置的回调地址
-    public static final String REDIRECT_URI = "http://www.sciener.cn";
+    public static final String REDIRECT_URI = "http://open.ttlock.com.cn";
 
     /**
      * 测试服务器
