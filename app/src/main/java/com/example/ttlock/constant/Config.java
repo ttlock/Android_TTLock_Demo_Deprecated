@@ -5,8 +5,8 @@ package com.example.ttlock.constant;
  */
 public class Config {
     //保存通通锁开放平台注册后返回过来的clientId,clientSecret
-    public static final String  CLIENT_ID = "7946f0d923934a61baefb3303de4d132";
-    public static final String  CLIENT_SECRET = "56d9721abbc3d22a58452c24131a5554";
+    public static final String  CLIENT_ID = "439063e312444f1f85050a52efcecd2e";
+    public static final String  CLIENT_SECRET = "0ef1c49b70c02ae6314bde603d4e9b05";
     //更新为注册设置的回调地址
     public static final String REDIRECT_URI = "http://open.ttlock.com.cn";
 
