@@ -77,7 +77,7 @@ public class GetPasswordActivity extends BaseActivity {
     private boolean hourOnly;
 
     /**
-     * 键盘密码类型
+     * keyboard password type
      */
     private int keyboardPwdType;
 
@@ -129,7 +129,7 @@ public class GetPasswordActivity extends BaseActivity {
             case R.id.loop:
                 hourOnly = true;
                 keyboardPwdType = KeyboardPasswdType.WEEKENDREPETUAL;
-                loopValueView.setText("周末");
+                loopValueView.setText("weekend");
                 loopLayout.setVisibility(View.VISIBLE);
                 endTimeLayout.setVisibility(View.VISIBLE);
                 break;

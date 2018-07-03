@@ -102,10 +102,10 @@ public final class OkHttpRequest {
     }
 
     /**
-     * json数据请求
+     * json format
      *
      * @param url
-     * @param params 请求参数
+     * @param params
      * @return
      */
     public static String sendPost(final String url, final String params) {

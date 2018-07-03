@@ -28,12 +28,12 @@ public class GatewayActivity extends BaseActivity {
     private String wifiName;
 
     /**
-     * wifi 密码
+     * wifi password
      */
     private String wifiPwd;
 
     /**
-     * 用户密码
+     * user password
      */
     private String userPwd;
 
@@ -68,7 +68,7 @@ public class GatewayActivity extends BaseActivity {
                         toast(errmsg);
                     } else {
                         int uid = jsonObject.getInt("uid");
-                        //注册网关接口
+                        //Regist gateway interface
                         GatewayAPI gatewayAPI = new GatewayAPI(GatewayActivity.this, new GatewayCallback() {
                             @Override
                             public void onConnectTimeOut() {
@@ -97,8 +97,7 @@ public class GatewayActivity extends BaseActivity {
                                 }
                             }
                         });
-                        //启动网关连接
-                        LogUtil.d("启动连接", true);
+                        //start link
                         gatewayAPI.startConnectLink(uid, userPwd, wifiName, wifiPwd);
                     }
                 } catch (Exception e) {

@@ -75,7 +75,7 @@ public class UnderGatewayLockAdapter extends RecyclerView.Adapter<UnderGatewayLo
                                 msg = jsonObject.getString("errmsg");
                             } else {
                                 long date = jsonObject.getLong("date");
-                                msg = "设置时间:" + DateUitl.getTime(date, "yyyy-MM-dd HH:mm");
+                                msg = "set time:" + DateUitl.getTime(date, "yyyy-MM-dd HH:mm");
                             }
                             ((BaseActivity)mContext).toast(msg);
                         } catch (JSONException e) {
@@ -108,7 +108,7 @@ public class UnderGatewayLockAdapter extends RecyclerView.Adapter<UnderGatewayLo
                                 msg = jsonObject.getString("errmsg");
                             } else {
                                 long date = jsonObject.getLong("date");
-                                msg = "锁时间:" + DateUitl.getTime(date, "yyyy-MM-dd HH:mm");
+                                msg = "lock time:" + DateUitl.getTime(date, "yyyy-MM-dd HH:mm");
                             }
                             ((BaseActivity)mContext).toast(msg);
                         } catch (JSONException e) {

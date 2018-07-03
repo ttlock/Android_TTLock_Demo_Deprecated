@@ -55,17 +55,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
-    /**
-     * 访问令牌
-     */
-    private String accessToken;
+//    private String accessToken;
 
     private KeyAdapter keyAdapter;
 
     private List<Key> keys;
 
     /**
-     * 记录当前点击的key
+     * current used key
      */
     public static Key curKey;
 
@@ -83,18 +80,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         init();
     }
 
-    /**
-     * Handle onNewIntent() to inform the fragment manager that the
-     * state is not saved.  If you are handling new intents and may be
-     * making changes to the fragment state, you want to be sure to call
-     * through to the super-class here first.  Otherwise, if your state
-     * is saved but the activity is not stopped, you could get an
-     * onNewIntent() call which happens before onResume() and trying to
-     * perform fragment operations at that point will throw IllegalStateException
-     * because the fragment manager thinks the state is still saved.
-     *
-     * @param intent
-     */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -114,27 +99,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     /**
-     * 初始化
+     * Initialization
      */
     private void init() {
-        //请求打开蓝牙
+        //turn on bluetooth
         MyApplication.mTTLockAPI.requestBleEnable(this);
-        LogUtil.d("启动蓝牙服务", DBG);
+        LogUtil.d("start bluetooth service", DBG);
         MyApplication.mTTLockAPI.startBleService(this);
-        LogUtil.d("请求位置权限", DBG);
-        //请求位置权限成功打开蓝牙
+        //It need location permission to start bluetooth scan,or it can not scan device
         if(requestPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             MyApplication.mTTLockAPI.startBTDeviceScan();
         }
 
-        accessToken = MyPreference.getStr(this, MyPreference.ACCESS_TOKEN);
+//        accessToken = MyPreference.getStr(this, MyPreference.ACCESS_TOKEN);
         keys = new ArrayList<>();
         syncData();
-//        keys = DbService.getKeysByAccessToken(accessToken);
-//        keyAdapter = new KeyAdapter(this, keys);
-////        LogUtil.d("listView:" + listView, DBG);
-//        listView.setAdapter(keyAdapter);
-//        listView.setOnCreateContextMenuListener(this);
     }
 
     @Override
@@ -155,9 +134,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @RequiresPermission(Manifest.permission.BLUETOOTH)
     public void onResume() {
         super.onResume();
-//        keys.clear();
-//        keys.addAll(DbService.getKeysByAccessToken(accessToken));
-//        keyAdapter.notifyDataSetChanged();
         LogUtil.d("", DBG);
     }
 
@@ -179,7 +155,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      *
-     * @param item 0 做删除操作
+     * @param item 0 do delete operation
      * @return
      */
     @Override
@@ -201,7 +177,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 @Override
                 protected String doInBackground(Void... params) {
-                    //删除本地钥匙
+                    //delete local key
                     DbService.deleteKey(key);
                     String json = ResponseService.deleteKey(key.getKeyId());
                     String msg = "";
@@ -223,7 +199,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LogUtil.d("关闭蓝牙服务", DBG);
+        LogUtil.d("stop bluetooth service", DBG);
         MyApplication.mTTLockAPI.stopBleService(this);
     }
 
@@ -287,14 +263,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Activity.RESULT_OK) {
             if(requestCode == TTLockAPI.REQUEST_ENABLE_BT) {
-                //打开蓝牙之后启动扫描
+                //start bluetooth scan
                 MyApplication.mTTLockAPI.startBTDeviceScan();
             }
         }
     }
 
     /**
-     * 全量更新锁数据
+     * synchronizes the data of key
      */
     private void syncData() {
         showProgressDialog();
@@ -302,7 +278,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             protected String doInBackground(Void... params) {
-                //时间戳传0 全量更新数据
+                //you can synchronizes all key datas when lastUpdateDate is 0
                 String json = ResponseService.syncData(0);
                 LogUtil.d("json:" + json, DBG);
                 try {
@@ -313,7 +289,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         startActivity(intent);
                         return json;
                     }
-                    //本次同步时间，下次要做增量更新的话，APP本地要保存起来，下次调用该接口时传上来。
+                    //use lastUpdateDate you can get the newly added key and data after the time
                     long lastUpdateDate = jsonObject.getLong("lastUpdateDate");
                     String keyList = jsonObject.getString("keyList");
                     JSONArray jsonArray = jsonObject.getJSONArray("keyList");
@@ -372,7 +348,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //                        DbService.saveKey(key);
                     }
 
-                    //清空本地并重新保存数据
+                    //clear local keys and save new keys
                     DbService.deleteAllKey();
                     DbService.saveKeyList(keys);
 
@@ -392,7 +368,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         }.execute();
     }
-
-
-
 }

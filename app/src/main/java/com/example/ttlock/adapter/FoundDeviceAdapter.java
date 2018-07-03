@@ -26,7 +26,7 @@ public class FoundDeviceAdapter extends BaseAdapter {
     }
 
     /**
-     * 更新扫描结果
+     * update scan device
      * @param extendedBluetoothDevice
      */
     public void updateDevice(ExtendedBluetoothDevice extendedBluetoothDevice) {

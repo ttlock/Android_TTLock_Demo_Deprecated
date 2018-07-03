@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="WIFI名称"
+            android:text="@string/words_wifi_name"
             android:gravity="center_vertical"/>
         <TextView
             android:id="@+id/wifiName"
@@ -34,7 +34,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="WIFI密码"
+                android:text="@string/words_wifi_password"
                 android:gravity="center_vertical"/>
             <EditText
                 android:id="@+id/password"
@@ -42,7 +42,7 @@
                 android:layout_height="50dp"
                 android:layout_marginRight="15dp"
                 android:background="@null"
-                android:hint="请输入网关密码"/>
+                android:hint="@string/words_enter_gateway_password"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="账号密码"
+                android:text="@string/words_account_password"
                 android:gravity="center_vertical"/>
             <EditText
                 android:id="@+id/userPwd"
@@ -60,7 +60,7 @@
                 android:layout_height="50dp"
                 android:layout_marginRight="15dp"
                 android:background="@null"
-                android:hint="请输入账号密码"/>
+                android:hint="@string/words_enter_account_password"/>
         </LinearLayout>
         <Button
             android:layout_marginTop="20dp"
@@ -68,7 +68,7 @@
             android:layout_height="50dp"
             android:onClick="onClick"
             android:background="@android:color/holo_red_light"
-            android:text="确定"
+            android:text="@string/words_ok"
             />
     </LinearLayout>
 </layout>

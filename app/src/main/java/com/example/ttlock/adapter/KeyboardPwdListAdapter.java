@@ -79,7 +79,7 @@ public class KeyboardPwdListAdapter extends RecyclerView.Adapter<KeyboardPwdList
                             if(errcode != 0) {
                                 msg = jsonObject.getString("errmsg");
                             } else {
-                                msg = "通过网关删除成功";
+                                msg = "delete successed by gateway";
                                 keyboardPwds.remove(position);
                                 notifyDataSetChanged();
                             }
@@ -118,7 +118,7 @@ public class KeyboardPwdListAdapter extends RecyclerView.Adapter<KeyboardPwdList
                                     if(errcode != 0) {
                                         msg = jsonObject.getString("errmsg");
                                     } else {
-                                        msg = "服务器删除密码成功";
+                                        msg = "delete password successed by server";
                                         keyboardPwds.remove(position);
                                         notifyDataSetChanged();
                                     }

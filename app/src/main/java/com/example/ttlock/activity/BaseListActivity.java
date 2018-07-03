@@ -31,7 +31,7 @@ public class BaseListActivity extends ListActivity {
     }
 
     /**
-     * 权限请求
+     * permission request
      * @param permission
      * @return
      */
@@ -42,7 +42,6 @@ public class BaseListActivity extends ListActivity {
                 LogUtil.w("not grant", true);
                 return false;
             }
-            //请求权限
             requestPermissions(new String[]{permission}, REQUEST_PERMISSION_REQ_CODE);
             return false;
         }
@@ -54,7 +53,7 @@ public class BaseListActivity extends ListActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == REQUEST_PERMISSION_REQ_CODE) {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if(Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0]))//位置权限获取成功启动蓝牙
+                if(Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0]))
                     MyApplication.mTTLockAPI.startBTDeviceScan();
             } else {
                 LogUtil.w("Permission denied.", DBG);

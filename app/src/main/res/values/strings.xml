@@ -96,4 +96,26 @@
     <string name="words_gateway_delete_successed">Gateway delete successed</string>
     <string name="words_authorize_successed">Authorize successed</string>
 
+    <string name="words_account">account</string>
+    <string name="words_enter_account">enter account</string>
+    <string name="words_password">password</string>
+    <string name="words_enter_password">enter password</string>
+    <string name="words_authorize">authorize</string>
+    <string name="words_access_token">access token</string>
+    <string name="words_open_id_info">ttlock user id</string>
+    <string name="words_add_gateway">add gateway</string>
+    <string name="words_gateway_list">gateway list</string>
+    <string name="words_wifi_name">WIFI name</string>
+    <string name="words_wifi_password">WIFI password</string>
+    <string name="words_account_password">Account password</string>
+    <string name="words_enter_gateway_password">enter WIFI password</string>
+    <string name="words_enter_account_password">enter account password</string>
+    <string name="words_ok">OK</string>
+    <string name="check_version">Check for UPDATE</string>
+    <string name="words_status">status</string>
+    <string name="words_version_info">Version information</string>
+    <string name="words_has_exist_lock">already exist this lock</string>
+    <string name="words_admin">admin</string>
+    <string name="words_user">user</string>
+    <string name="words_battery">battery</string>
 </resources>

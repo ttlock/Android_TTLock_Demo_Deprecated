@@ -20,9 +20,9 @@ public class ResponseService {
     private static String actionUrlV3 = actionUrl + "/v3";
 
     /**
-     * 授权
-     * @param username  用户名
-     * @param password  密码
+     * authorize
+     * @param username  user name
+     * @param password  password
      * @return
      */
     public static String auth(String username, String password) {
@@ -38,29 +38,8 @@ public class ResponseService {
     }
 
     /**
-     * 绑定管理员
-     * @param key
-     * @return
-     */
-    @Deprecated
-    public static String bindAdmin(Key key) {
-        String url = actionUrlV2 + "/lock/bindingAdmin";
-        HashMap params = new HashMap();
-        params.put("clientId", Config.CLIENT_ID);
-        params.put("accessToken", MyPreference.getStr(MyApplication.mContext, MyPreference.ACCESS_TOKEN));
-        params.put("lockName", key.getLockName());
-        params.put("lockMac", key.getLockMac());
-        params.put("lockKey", key.getUnlockKey());
-        params.put("lockFlagPos", String.valueOf(key.getLockFlagPos()));
-        params.put("aesKeyStr", key.getAesKeystr());
-        params.put("lockVersion", key.getLockVersion());
-        params.put("date", String.valueOf(System.currentTimeMillis()));
-        return OkHttpRequest.sendPost(url, params);
-    }
-
-    /**
-     * 锁初始化接口将锁相关的数据在服务端做初始化，同时会为调用该接口的用户生成一把管理员钥匙。
-     * 锁初始化成功后，管理员钥匙拥有者就可以给其他用户发送普通钥匙或是发送密码了。
+     * Call this api after calling SDK method to add a lock. This api will create an admin ekey for current user.
+     * After initializing a lock, the admin can send ekey or create passcode for others.
      * @param key
      * @return
      */
@@ -94,42 +73,9 @@ public class ResponseService {
     }
 
     /**
-     * 解绑管理员
-     * @param lockId
-     * @return
-     */
-    @Deprecated
-    public static String unbindAdmin(int lockId) {
-        String url = actionUrlV2 + "/lock/unbind";
-        HashMap params = new HashMap();
-        params.put("clientId", Config.CLIENT_ID);
-        params.put("accessToken", MyPreference.getStr(MyApplication.mContext, MyPreference.ACCESS_TOKEN));
-        params.put("lockId", String.valueOf(lockId));
-        params.put("date", String.valueOf(System.currentTimeMillis()));
-        return OkHttpRequest.sendPost(url, params);
-    }
-
-    /**
-     * 普通用户删除自己的钥匙
-     * @param lockId
-     * @param keyId
-     * @return
-     */
-    @Deprecated
-    public static String deleteEKeyBySelf(int lockId, int keyId) {
-        String url = actionUrlV2 + "/key/deleteBySelf";
-        HashMap params = new HashMap();
-        params.put("clientId", Config.CLIENT_ID);
-        params.put("accessToken", MyPreference.getStr(MyApplication.mContext, MyPreference.ACCESS_TOKEN));
-        params.put("lockId", String.valueOf(lockId));
-        params.put("keyId", String.valueOf(keyId));
-        params.put("date", String.valueOf(System.currentTimeMillis()));
-        return OkHttpRequest.sendPost(url, params);
-    }
-
-    /**
-     * 删除钥匙
-     * @param keyId 钥匙Id
+     * Call this api to delete common ekeys and admin ekey
+     * All ekeys and passcodes will be deleted from server when you delete the admin ekey
+     * @param keyId key id
      * @return
      */
     public static String deleteKey(int keyId) {
@@ -142,9 +88,8 @@ public class ResponseService {
         return OkHttpRequest.sendPost(url, params);
     }
 
-
     /**
-     * 重置键盘密码
+     * Call this api after you calling the SDK method to reset the passcode. All passcode will be invalidated after reseting, except the super passcode.
      * @param key
      * @return
      */
@@ -161,7 +106,9 @@ public class ResponseService {
     }
 
     /**
-     * 发送电子钥匙
+     * The admin of the locks can't send ekeys to himself
+     * For one lock, any user can only have one ekey.If you send an ekey to someone who already have one, the previous one will be deleted.
+     * Note:It will be a permenant ekey when you set the startDate and endDate to 0
      * @param key
      * @return
      */
@@ -173,50 +120,19 @@ public class ResponseService {
         params.put("lockId", String.valueOf(key.getLockId()));
         params.put("receiverUsername", receiverUsername);
 
-        //起始、结束时间传入时间戳，0表示永久钥匙
+        //It will be a permenant ekey when you set the startDate and endDate to 0
         params.put("startDate", String.valueOf(0));
         params.put("endDate", String.valueOf(0));
 
-        //备注,留言
         params.put("remarks", "");
         params.put("date", String.valueOf(System.currentTimeMillis()));
         return OkHttpRequest.sendPost(url, params);
     }
 
     /**
-     * 获取钥匙列表
-     * @return
-     */
-    @Deprecated
-    public static String keyList() {
-        String url = actionUrlV2 + "/lock/listShareKey";
-        HashMap params = new HashMap();
-        params.put("clientId", Config.CLIENT_ID);
-        params.put("accessToken", MyPreference.getStr(MyApplication.mContext, MyPreference.ACCESS_TOKEN));
-        params.put("date", String.valueOf(System.currentTimeMillis()));
-        return OkHttpRequest.sendPost(url, params);
-    }
-
-    /**
-     * 下载电子钥匙
-     * @param lockId
-     * @param keyId
-     * @return
-     */
-    @Deprecated
-    public static String downloadKey(int lockId, int keyId) {
-        String url = actionUrlV2 + "/key/download";
-        HashMap params = new HashMap();
-        params.put("clientId", Config.CLIENT_ID);
-        params.put("accessToken", MyPreference.getStr(MyApplication.mContext, MyPreference.ACCESS_TOKEN));
-        params.put("lockId", String.valueOf(lockId));
-        params.put("keyId", String.valueOf(keyId));
-        params.put("date", String.valueOf(System.currentTimeMillis()));
-        return OkHttpRequest.sendPost(url, params);
-    }
-
-    /**
-     * 获取键盘密码
+     * For locks of non-v4 passcode, if you get the prompt of "passcode is used out" or "no passcode data", please reset the passcode.
+     * The valid time of the passcode should be defined in HOUR,set the minute and second to 0. If the valid period is longer than one year, the end time should be XX months later than the start time, without any difference in DAY,HOUR.
+     * Earlier passcode version，reference：https://open.sciener.cn/doc/api/keyboardPwdType
      * @param lockId
      * @param keyboardPwdVersion
      * @param keyboardPwdType
@@ -239,9 +155,9 @@ public class ResponseService {
     }
 
     /**
-     * APP第一次同步数据，不需要传lastUpdateDate，服务端会返回全量的钥匙数据。
-     * APP将钥匙数据缓存在本地，后续再调用该接口，携带上次返回的lastUpdateDate,服务端会返回这个时间点后新增加的钥匙和数据有变化的钥匙,APP根据返回的钥匙数据更新本地的钥匙。
-     * @param lastUpdateDate    最近同步时间(最后一次调用该接口，服务端返回的)，不传则返回全量的钥匙数据。
+     * If you don't assign any value to the parameter lastUpdateDate, you will get a list of all ekeys
+     * If you assign a time to the parameter lastUpdateDate, you will get a list of ekeys which have been updated since lastUpdateDate.
+     * @param lastUpdateDate    The time of current request to sync ekey data. You can assign it to parameter lastUpdateDate next time when you want to sync ekey
      * @return
      */
     public static String syncData(long lastUpdateDate) {
@@ -255,9 +171,10 @@ public class ResponseService {
     }
 
     /**
-     * 重置电子钥匙
-     * @param lockId             钥匙Id
-     * @param lockFlagPos       锁标志位
+     * Call this api after you calling the SDK method to reset ekeys
+     * All common ekeys will be invalidated after reseting, except the admin ekey
+     * @param lockId             key id
+     * @param lockFlagPos       The flag which will be used to check the validity of the ekey
      * @return
      */
     public static String resetKey(int lockId, int lockFlagPos) {
@@ -271,10 +188,10 @@ public class ResponseService {
         return OkHttpRequest.sendPost(url, params);
     }
 
-    /** -------------------------------网关相关接口-------------------------------------- */
+    /** -------------------------------gateway related interface-------------------------------------- */
 
     /**
-     * 获取用户Id
+     * get user id
      * @return
      */
     public static String getUserId() {
@@ -287,8 +204,8 @@ public class ResponseService {
     }
 
     /**
-     * 查询某网关是否初始化成功
-     * @param gatewayNetMac    网关MAC地址
+     * Call this api after you calling the SDK method to add a gateway, to check whether it has been added successfully.
+     * @param gatewayNetMac    The Mac which you will get when calling the SDK method to add a gateway
      * @return
      */
     public static String isInitSuccess(String gatewayNetMac) {
@@ -302,8 +219,8 @@ public class ResponseService {
     }
 
     /**
-     * 读取锁时间
-     * @param lockId    锁ID
+     * Get the time of lock via WiFi
+     * @param lockId    lock id
      * @return
      */
     public static String queryLockDate(int lockId) {
@@ -317,8 +234,8 @@ public class ResponseService {
     }
 
     /**
-     * 校准锁时间
-     * @param lockId     锁ID
+     * update the lock time by wifi
+     * @param lockId     lock id
      * @return
      */
     public static String updateLockDate(int lockId) {
@@ -332,9 +249,9 @@ public class ResponseService {
     }
 
     /**
-     *  获取名下网关列表
-     * @param pageNo        页数
-     * @param pageSize      页大小
+     *  gateway list of user
+     * @param pageNo        Page, start from 1
+     * @param pageSize      Items per page, default 20, max 100
      * @return
      */
     public static String gatewayList(int pageNo, int pageSize) {
@@ -349,8 +266,8 @@ public class ResponseService {
     }
 
     /**
-     * 删除网关
-     * @param gatewayId     网关id
+     * delete the gateway
+     * @param gatewayId    Gateway ID
      * @return
      */
     public static String deleteGateway(int gatewayId) {
@@ -364,8 +281,8 @@ public class ResponseService {
     }
 
     /**
-     * 获取网关管理的锁列表
-     * @param gatewayId     网关id
+     * Get the lock list of a gateway
+     * @param gatewayId     gateway id
      * @return
      */
     public static String underGatewayLockList(int gatewayId) {
@@ -378,11 +295,14 @@ public class ResponseService {
         return OkHttpRequest.sendPost(url, params);
     }
 
+
+
+
     /**
-     * 获取锁的键盘密码列表
-     * @param lockId        锁id
-     * @param pageNo        页码，从1开始
-     * @param pageSize      每页数量，默认20
+     * Get all created passcodes of a lock
+     * @param lockId        Lock ID
+     * @param pageNo        Page, start from 1
+     * @param pageSize      Items per page, default 20, max 100
      * @return
      */
     public static String keyboardPwdList(int lockId, int pageNo, int pageSize) {
@@ -398,10 +318,10 @@ public class ResponseService {
     }
 
     /**
-     * 删除单个键盘密码
-     * @param lockId            锁id
-     * @param keyboardPwdId     键盘密码id
-     * @param deleteType        删除方式:1-通过APP走蓝牙删除，2-通过网关走WIFI删除；不传则默认1,必需先通过APP蓝牙删除密码后调用该接口，如果锁有连接网关，则可以直接调用该接口删除密码。
+     * Only the locks with V4 passcode can delete a passcode via bluetooth or gateway.
+     * @param lockId            lock id
+     * @param keyboardPwdId     Passcode ID
+     * @param deleteType        Delete type:1-delete with App via Bluetooth;2-delete via WiFi gateway. The default value is 1. If it is 1, you should delete via bluetooth first. If it is 2, you can call this api to delete it directly.
      * @return
      */
     public static String deleteKeyboardPwd(int lockId, int keyboardPwdId, int deleteType) {
@@ -417,8 +337,9 @@ public class ResponseService {
     }
 
     /**
-     * 判断是否需要升级
-     * @param lockId    锁id
+     * Check to see whether there is any upgrade for a lock, depending on modelNum、hardwareRevision、firmwareRevision、specialValue.
+     * If there is no version info on the server, returns 'unknown'.In this case, you need to call SDK method to get aforementioned 4 parameters first, and then call [Upgrade recheck] to check for upgrading.
+     * @param lockId    lock id
      * @return
      */
     public static String isNeedUpdate(int lockId) {
@@ -432,8 +353,9 @@ public class ResponseService {
     }
 
     /**
-     * 再次判断是否需要升级
-     * @param lockId    锁id
+     * Recheck to see whether there is any upgrade for a lock
+     * Warning: The aforementioned 4 parameters will be set into database on server. Please make sure that they are from the SDK method.
+     * @param lockId    lock id
      * @return
      */
     public static String isNeedUpdateAgain(int lockId, FirmwareInfo deviceInfo) {
@@ -452,7 +374,7 @@ public class ResponseService {
     }
 
     /**
-     * 上传操作日志
+     * upload the operation log from lock
      * @param lockId
      * @param records
      * @return

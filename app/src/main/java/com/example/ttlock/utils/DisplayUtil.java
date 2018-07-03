@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 
 /**
- * dp、sp 转换为 px 的工具类
+ * dp、sp convert to px
  * 
  *
  */
@@ -14,11 +14,10 @@ public class DisplayUtil
 	private static int sScreenHeight;
 
 	/**
-	 * 将px值转换为dip或dp值，保证尺寸大小不变
-	 * 
+	 *
+	 * convert px value to dp
 	 * @param pxValue
-	 *            （DisplayMetrics类中属性density）
-	 * @return
+	 *
 	 */
 	public static int px2dip(Context context, float pxValue)
 	{
@@ -27,10 +26,10 @@ public class DisplayUtil
 	}
 
 	/**
-	 * 将dip或dp值转换为px值，保证尺寸大小不变
+	 * convert dp value to px
 	 * 
 	 * @param dipValue
-	 *            （DisplayMetrics类中属性density）
+	 *
 	 * @return
 	 */
 	public static int dip2px(Context context, float dipValue)
@@ -40,10 +39,10 @@ public class DisplayUtil
 	}
 
 	/**
-	 * 将px值转换为sp值，保证文字大小不变
+	 * convert px value to sp
 	 * 
 	 * @param pxValue
-	 *            （DisplayMetrics类中属性scaledDensity）
+	 *
 	 * @return
 	 */
 	public static int px2sp(Context context, float pxValue)
@@ -53,10 +52,10 @@ public class DisplayUtil
 	}
 
 	/**
-	 * 将sp值转换为px值，保证文字大小不变
+	 * convert sp value to px
 	 * 
 	 * @param spValue
-	 *            （DisplayMetrics类中属性scaledDensity）
+	 *
 	 * @return
 	 */
 	public static int sp2px(Context context, float spValue)
@@ -67,7 +66,7 @@ public class DisplayUtil
 
 
 	/**
-	 * 获得屏幕高度
+	 * get the width of screen
 	 *
 	 * @param context
 	 * @return
@@ -80,7 +79,7 @@ public class DisplayUtil
 	}
 
 	/**
-	 * 获得屏幕宽度
+	 * get the height of screen
 	 *
 	 * @param context
 	 * @return
@@ -93,14 +92,13 @@ public class DisplayUtil
 	}
 
 	/**
-	 * 获得状态栏的高度
+	 * get the height of status bar
 	 *
 	 * @param context
 	 * @return
 	 */
 	public static int getStatusHeight(Context context)
 	{
-
 		int statusHeight = -1;
 		try
 		{
@@ -117,18 +115,5 @@ public class DisplayUtil
 	}
 
 	private static long lastClickTime;
-
-	/**
-	 * 防止重复点击机制 3s 内仅允许一次点击
-	 * @return
-     */
-	public synchronized static boolean isFastClick() {
-		long time = System.currentTimeMillis();
-		if (Math.abs(time - lastClickTime) < 1000) {
-			return true;
-		}
-		lastClickTime = time;
-		return false;
-	}
 
 }

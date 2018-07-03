@@ -2,86 +2,86 @@ package com.example.ttlock.enumtype;
 
 public enum Operation {
     /**
-     * 添加管理员
+     * add admin
      */
     ADD_ADMIN,
 
     /**
-     * 开门
+     * nulock
      */
     UNLOCK,
 
     /**
-     * 重置键盘密码
+     * reset keyboard passcode
      */
     RESET_KEYBOARD_PASSWORD,
 
     /**
-     * 重置电子钥匙
+     * reset ekey
      */
     RESET_EKEY,
 
     /**
-     * 设置锁时间
+     * set lock time
      */
     SET_LOCK_TIME,
     /**
-     * 获取锁的时间
+     * get lock time
      */
     GET_LOCK_TIME,
 
     /**
-     * 获取操作日志
+     * get operation log
      */
     GET_OPERATE_LOG,
 
     /**
-     * 车位锁升起
+     * parking lock up
      */
     LOCKCAR_UP,
 
     /**
-     * 车位锁降下
+     * parking lock down
      */
     LOCKCAR_DOWN,
 
     /**
-     * 点击开锁
+     * click to unlock
      */
     CLICK_UNLOCK,
 
     /**
-     * 设置管理员键盘密码
+     * set admin passcode
      */
     SET_ADMIN_KEYBOARD_PASSWORD,
 
     /**
-     * 设置删除密码
+     * set delete passcode
      */
     SET_DELETE_PASSWORD,
 
     /**
-     * 恢复出厂设置
+     * Restore factory settings
      */
     RESET_LOCK,
 
     /**
-     * 校准时间
+     * set lock time
      */
     CHECK_LOCKTIME,
 
     /**
-     * 修改锁的名称
+     * modify key name
      */
     MODIFY_KEYNAME,
 
     /**
-     * 设置删除单个键盘密码
+     * delete keyboard passcode
      *
      */
     DELETE_ONE_KEYBOARDPASSWORD,
     /**
-     * 获取锁版本信息
+     * get lock version information
      */
     GET_LOCK_VERSION_INFO,
 

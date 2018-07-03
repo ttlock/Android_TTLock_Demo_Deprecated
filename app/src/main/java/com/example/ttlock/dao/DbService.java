@@ -19,7 +19,7 @@ public class DbService {
     private static QueryBuilder queryBuilder = keyDao.queryBuilder();
 
     /**
-     * 根据accessToken获取钥匙
+     * get keys by accessToken
      * @param accessToken
      * @return
      */
@@ -29,7 +29,7 @@ public class DbService {
     }
 
     /**
-     * 根据accessToken和lockmac获取钥匙
+     * get key by accessToken and lockmac
      * @param accessToken
      * @param lockmac
      * @return
@@ -46,7 +46,7 @@ public class DbService {
     }
 
     /**
-     * 保存key
+     * save key
      * @param key
      */
     public static void saveKey(Key key) {
@@ -54,7 +54,7 @@ public class DbService {
     }
 
     /**
-     * 删除钥匙
+     * delete key
      * @param key
      */
     public static void deleteKey(Key key) {
@@ -62,21 +62,21 @@ public class DbService {
     }
 
     /**
-     * 保存钥匙列表
+     * save key list
      */
     public static void saveKeyList(List<Key> keys) {
         keyDao.saveInTx(keys);
     }
 
     /**
-     * 清空所有钥匙
+     * clear all keys
      */
     public static void deleteAllKey() {
         keyDao.deleteAll();
     }
 
     /**
-     * 更新key
+     * update key
      * @param key
      */
     public static void updateKey(Key key) {

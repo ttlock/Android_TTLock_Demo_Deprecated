@@ -97,4 +97,26 @@
     <string name="words_gateway_delete_successed">网关删除成功</string>
     <string name="words_authorize_successed">授权成功</string>
 
+    <string name="words_account">账号</string>
+    <string name="words_enter_account">输入账号</string>
+    <string name="words_password">密码</string>
+    <string name="words_enter_password">输入密码</string>
+    <string name="words_authorize">授权</string>
+    <string name="words_access_token">访问令牌</string>
+    <string name="words_open_id_info">开放平台注册的ttlock user id</string>
+    <string name="words_add_gateway">添加网关</string>
+    <string name="words_gateway_list">网关列表</string>
+    <string name="words_wifi_name">WIFI名称</string>
+    <string name="words_wifi_password">WIFI密码</string>
+    <string name="words_account_password">账号密码</string>
+    <string name="words_enter_gateway_password">请输入WIFI密码</string>
+    <string name="words_enter_account_password">请输入账号密码</string>
+    <string name="words_ok">确定</string>
+    <string name="check_version">检查更新</string>
+    <string name="words_status">状态</string>
+    <string name="words_version_info">版本信息</string>
+    <string name="words_has_exist_lock">本地已经存在该把锁</string>
+    <string name="words_admin">管理员</string>
+    <string name="words_user">普通用户</string>
+    <string name="words_battery">电量</string>
 </resources>

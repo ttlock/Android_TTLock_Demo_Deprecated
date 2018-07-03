@@ -35,7 +35,6 @@ public class FoundDeviceActivity extends BaseActivity implements AdapterView.OnI
             }
 //            else if(action.equals(BleConstant.ACTION_BLE_DISCONNECTED)) {
 //                cancelProgressDialog();
-//                Toast.makeText(FoundDeviceActivity.this, "蓝牙已断开,请重新添加.", Toast.LENGTH_LONG).show();
 //            }
         }
     };

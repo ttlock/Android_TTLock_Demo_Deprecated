@@ -33,7 +33,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
     private ProgressDialog progressDialog;
 
     /**
-     * 再次检测
+     * check again
      */
     private boolean checkAgain;
 
@@ -133,7 +133,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_device_firmware_update);
         mKey = curKey;
         /**
-         * 停掉蓝牙扫描
+         * stop bluetooth scan
          */
         MyApplication.mTTLockAPI.stopBTDeviceScan();
         deviceFirmwareUpdateApi = new DeviceFirmwareUpdateApi(this, MyApplication.mTTLockAPI, deviceFirmwareUpdateCallback);
@@ -168,17 +168,16 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
                 cancelProgressDialog();
                 if(firmwareInfo.errcode == 0) {
                     switch (firmwareInfo.needUpgrade) {
-                        case 0://不需要升级
+                        case 0://no need to upgrade
                             binding.status.setText(getString(R.string.is_the_lastest_version));
                             binding.version.setText(firmwareInfo.version);
                             break;
-                        case 1://需要升级
+                        case 1://need upgrade
                             binding.status.setText(getString(R.string.new_version_found));
                             binding.version.setText(firmwareInfo.version);
                             showUpgradeDialog();
-                            //TODO:弹出升级对话框
                             break;
-                        case 2://版本信息未知
+                        case 2://unknown version
                             binding.status.setText(getString(R.string.unknown_lock_version));
                             binding.version.setText(getString(R.string.unknown_lock_version));
                             showGetLockFirmwareDialog();
@@ -205,17 +204,16 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
                 cancelProgressDialog();
                 if(firmwareInfo.errcode == 0) {
                     switch (firmwareInfo.needUpgrade) {
-                        case 0://不需要升级
+                        case 0://no need to upgrade
                             binding.status.setText(getString(R.string.is_the_lastest_version));
                             binding.version.setText(firmwareInfo.version);
                             break;
-                        case 1://需要升级
+                        case 1://need upgrade
                             binding.status.setText(getString(R.string.new_version_found));
                             binding.version.setText(firmwareInfo.version);
                             showUpgradeDialog();
-                            //TODO:弹出升级对话框
                             break;
-                        case 2://版本信息未知
+                        case 2://unknown version
                             binding.status.setText(getString(R.string.unknown_lock_version));
                             binding.version.setText(getString(R.string.unknown_lock_version));
                             showGetLockFirmwareDialog();
@@ -275,7 +273,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         deviceFirmwareUpdateApi.abortUpgradeProcess();
-        //重新开启扫描
+        //start bluetooth scan again
         MyApplication.mTTLockAPI.startBTDeviceScan();
     }
 }

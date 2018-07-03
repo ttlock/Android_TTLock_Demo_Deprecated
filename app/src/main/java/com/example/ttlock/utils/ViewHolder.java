@@ -10,7 +10,6 @@ import android.view.View;
  */
 public class ViewHolder {
 
-    //TODO:不保存
     private View mConvertView;
     private SparseArray<View> mViews;
 

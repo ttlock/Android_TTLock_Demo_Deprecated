@@ -5,67 +5,67 @@ package com.example.ttlock.model;
  */
 public class KeyboardPasswdType {
     /**
-     * 单次密码
+     * One-time
      */
     public static final int ONCE = 1;
 
     /**
-     * 永久
+     * Permanent
      */
     public static final int PERMENANT = 2;
 
     /**
-     * 期限
+     * Period
      */
     public static final int PERIOD = 3;
 
     /**
-     * 周末循环
+     * Weekend Cyclic
      */
     public static final int WEEKENDREPETUAL = 5;
 
     /**
-     * 每日循环
+     * Daily Cyclic
      */
     public static final int DAILYREP = 6;
 
     /**
-     * 工作日循环
+     * Workday Cyclic
      */
     public static final int WORKDAYREP = 7;
 
     /**
-     * 周一循环
+     * Monday Cyclic
      */
     public static final int MONDAYREP = 8;
 
     /**
-     * 周二循环
+     * Tuesday Cyclic
      */
     public static final int TUESDAYREP = 9;
 
     /**
-     * 周三循环
+     * Wednesday Cyclic
      */
     public static final int WEDNESDAYREP = 10;
 
     /**
-     * 周四循环
+     * Thursday Cyclic
      */
     public static final int THURSDAYREP = 11;
 
     /**
-     * 周五循环
+     * Friday Cyclic
      */
     public static final int FRIDAYREP = 12;
 
     /**
-     * 周六循环
+     * Saturday Cyclic
      */
     public static final int SATURDAYREP = 13;
 
     /**
-     * 周日循环
+     * Sunday Cyclic
      */
     public static final int SUNDAYREP = 14;
 }

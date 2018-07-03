@@ -12,10 +12,7 @@ public class MyPreference {
     public static String ACCESS_TOKEN = "access_token";
     public static String OPEN_ID = "openid";
 
-    /**
-     * 记录钥匙上次同步的时间
-     */
-    public static String UPDATE_DATE = "update_date";
+//    public static String UPDATE_DATE = "update_date";
 //    public static String expires_in = "expires_in";
 
     public static int getInt(Context context, String key) {

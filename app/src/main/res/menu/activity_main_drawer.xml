@@ -4,12 +4,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_auth"
-            android:title="授权" />
+            android:title="@string/words_authorize" />
         <item
             android:id="@+id/nav_gateway"
-            android:title="添加网关" />
+            android:title="@string/words_add_gateway" />
         <item android:id="@+id/nav_gateway_list"
-            android:title="网关列表"/>
+            android:title="@string/words_gateway_list"/>
         <!--<item-->
             <!--android:id="@+id/nav_slideshow"-->
             <!--android:icon="@drawable/ic_menu_slideshow"-->

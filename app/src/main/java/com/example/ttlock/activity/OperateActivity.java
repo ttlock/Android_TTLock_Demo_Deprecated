@@ -66,22 +66,25 @@ public class OperateActivity extends BaseActivity {
     @OnItemClick(R.id.list)
     void onItemClick(int position) {
         switch (position) {
-            case Operate.CLICK_TO_UNLOCK://点击开门
-                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
+            case Operate.CLICK_TO_UNLOCK://click to unlock
+                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call interface directly
                     if(mKey.isAdmin())
                         mTTLockAPI.unlockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                     else
                         mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
-                } else {//未连接进行连接
+                } else {//to connect the lock
                     showProgressDialog(getString(R.string.words_wait));
                     mTTLockAPI.connect(mKey.getLockMac());
                     bleSession.setOperation(Operation.CLICK_UNLOCK);
                     bleSession.setLockmac(mKey.getLockMac());
                 }
                 break;
-            //后面两个操作是车位锁独有操作
-            case Operate.LOCKCAR_UP://车位锁升
-                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
+            case Operate.DEVICE_FIRMWARE_UPDATE:
+                start_activity(DeviceFirmwareUpdateActivity.class);
+                break;
+            //the next two operations for Parking Lock
+            case Operate.LOCKCAR_UP://Parking Lock up
+                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call interface directly
                     if(mKey.isAdmin())
                         mTTLockAPI.lockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr());
                     else
@@ -94,8 +97,8 @@ public class OperateActivity extends BaseActivity {
                     bleSession.setLockmac(mKey.getLockMac());
                 }
                 break;
-            case Operate.LOCKCAR_DOWN://车位锁降
-                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//当前处于连接状态 直接发指令
+            case Operate.LOCKCAR_DOWN://Parking Lock down
+                if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call interface directly
                     if(mKey.isAdmin())
                         mTTLockAPI.unlockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                     else
@@ -107,9 +110,6 @@ public class OperateActivity extends BaseActivity {
                     bleSession.setOperation(Operation.LOCKCAR_DOWN);
                     bleSession.setLockmac(mKey.getLockMac());
                 }
-                break;
-            case Operate.DEVICE_FIRMWARE_UPDATE:
-                start_activity(DeviceFirmwareUpdateActivity.class);
                 break;
             default:
                 showMyDialog(position);
@@ -128,15 +128,12 @@ public class OperateActivity extends BaseActivity {
         String hit = "";
         switch (operate) {
             case Operate.SET_ADMIN_CODE:
-//                title = "设置管理码";
                 hit = getString(R.string.words_input_admin_code);
                 break;
             case Operate.SET_DELETE_CODE:
-//                title = "设置清空码";
                 hit = getString(R.string.words_input_clear_code);
                 break;
             case Operate.SET_LOCK_TIME:
-//                title = "设置锁时间";
                 hit = getString(R.string.words_input_time);
                 break;
             case Operate.SEND_EKey:
@@ -199,18 +196,18 @@ public class OperateActivity extends BaseActivity {
                         }
                         break;
                     case Operate.RESET_EKEY:
-                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {//如果当前处于连接状态，则直接发送重置钥匙指令
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call resetEKey interface directly
                             mTTLockAPI.resetEKey(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
-                        } else {//主动连接锁 并设置操作标志
+                        } else {//to connect the lock and set the operation flag
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.RESET_EKEY);
                             bleSession.setLockmac(mKey.getLockMac());
                         }
                         break;
                     case Operate.RESET_LOCK:
-                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {//如果当前处于连接状态，则直接发送重置锁指令
+                        if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call resetLock interface directly
                             mTTLockAPI.resetLock(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
-                        } else {//主动连接锁 并设置操作标志
+                        } else {//to connect the lock and set the operation flag
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.RESET_LOCK);
                             bleSession.setLockmac(mKey.getLockMac());
@@ -272,13 +269,11 @@ public class OperateActivity extends BaseActivity {
 
         Window dialogWindow = dialog.getWindow();
         WindowManager m = getWindowManager();
-        Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-        WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        Display d = m.getDefaultDisplay();
+        WindowManager.LayoutParams p = dialogWindow.getAttributes();
         LogUtil.d("p.height:" + p.height, DBG);
         LogUtil.d("p.width:" + p.width, DBG);
-//        p.width = WindowManager.LayoutParams.MATCH_PARENT;
-//        p.height = (int) (d.getHeight() * 0.6); // 高度设置为屏幕的0.6
-        p.width = (int) (d.getWidth() * 0.8); // 宽度设置为屏幕的0.65
+        p.width = (int) (d.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
 
         dialog.setContentView(dialogView);

@@ -145,7 +145,6 @@ public class MultiButtonDialog extends Dialog implements View.OnClickListener {
         viewHolder.btn_right.setText(stringId);
     }
 
-    //TODO:不是输入数字
     public void setInputTypeNumber() {
         viewHolder.mEt_input.setInputType(InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
     }

@@ -16,7 +16,7 @@ import com.example.ttlock.R;
 
 
 /**
- * 圆角FrameLayout
+ * Round FrameLayout
  *
  * @author ybao
  */

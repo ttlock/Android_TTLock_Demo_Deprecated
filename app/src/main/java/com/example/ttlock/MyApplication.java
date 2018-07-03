@@ -56,29 +56,29 @@ public class MyApplication extends Application {
     public static OperateCallback operateCallback;
 
     /**
-     * 当前操作的key
+     * current used key
      */
     private Key curKey;
 
     /**
-     *  蓝牙操作
+     *  bluetooth operation
      */
     public static BleSession bleSession = BleSession.getInstance(Operation.UNLOCK, null);
 
     /**
-     * 通通锁
+     * TTLockAPI
      */
     public static TTLockAPI mTTLockAPI;
 
     private Handler handler = new Handler();
 
     /**
-     * 通通锁回调
+     * TTLock Callback
      */
     private TTLockCallback mTTLockCallback = new TTLockCallback() {
         @Override
         public void onFoundDevice(ExtendedBluetoothDevice extendedBluetoothDevice) {
-            //发现设备并广播
+            //found device and broadcast
             broadcastUpdate(BleConstant.ACTION_BLE_DEVICE, BleConstant.DEVICE, extendedBluetoothDevice);
             String accessToken = MyPreference.getStr(mContext, MyPreference.ACCESS_TOKEN);
             Key localKey = DbService.getKeyByAccessTokenAndLockmac(accessToken, extendedBluetoothDevice.getAddress());
@@ -108,20 +108,20 @@ public class MyApplication extends Application {
         public void onDeviceConnected(ExtendedBluetoothDevice extendedBluetoothDevice) {
             LogUtil.d("bleSession.getOperation():" + bleSession.getOperation(), DBG);
             String accessToken = MyPreference.getStr(mContext, MyPreference.ACCESS_TOKEN);
-            //TODO:
             Key localKey = DbService.getKeyByAccessTokenAndLockmac(accessToken, extendedBluetoothDevice.getAddress());
             curKey = MainActivity.curKey;
-            //uid 等同于 openid
+            //uid equal to openid
             int uid = MyPreference.getOpenid(mContext, MyPreference.OPEN_ID);
 //            operateSuccess = false;
             switch (bleSession.getOperation()) {
                 case ADD_ADMIN:
-                    //TODO:判断本地是否存在
-                    mTTLockAPI.addAdministrator(extendedBluetoothDevice);
+                    if (localKey == null)
+                        mTTLockAPI.addAdministrator(extendedBluetoothDevice);
+                    else Toast.makeText(mContext, R.string.words_has_exist_lock, Toast.LENGTH_LONG).show();
                     break;
                 case UNLOCK:
                 case CLICK_UNLOCK:
-                    if(localKey != null) {//本地存在锁
+                    if(localKey != null) {
                         if(localKey.isAdmin())
                             mTTLockAPI.unlockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), System.currentTimeMillis(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                         else
@@ -129,45 +129,45 @@ public class MyApplication extends Application {
                     }
 //                    mTTLockAPI.unlockByUser(extendedBluetoothDevice, 0, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getUnlockKey(), 0, localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
-                case SET_ADMIN_KEYBOARD_PASSWORD://管理码
+                case SET_ADMIN_KEYBOARD_PASSWORD:
                     mTTLockAPI.setAdminKeyboardPassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr(), bleSession.getPassword());
                     break;
-                case SET_DELETE_PASSWORD://删除码
+                case SET_DELETE_PASSWORD:
                     mTTLockAPI.setDeletePassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr(), bleSession.getPassword());
                     break;
-                case SET_LOCK_TIME://设置锁时间
+                case SET_LOCK_TIME:
                     mTTLockAPI.setLockTime(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getUnlockKey(), System.currentTimeMillis(), curKey.getLockFlagPos(), curKey.getAesKeystr(), curKey.getTimezoneRawOffset());
                     break;
-                case RESET_KEYBOARD_PASSWORD://重置键盘密码
+                case RESET_KEYBOARD_PASSWORD:
                     mTTLockAPI.resetKeyboardPassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr());
                     break;
-                case RESET_EKEY://重置电子钥匙 锁标志位+1
+                case RESET_EKEY://reset ekey, lockFlagPos +1
                     mTTLockAPI.resetEKey(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
                     break;
-                case RESET_LOCK://重置锁
+                case RESET_LOCK:
                     mTTLockAPI.resetLock(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr());
                     break;
-                case GET_OPERATE_LOG://获取操作日志
+                case GET_OPERATE_LOG:
                     mTTLockAPI.getOperateLog(extendedBluetoothDevice, curKey.getLockVersion(), curKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
-                case GET_LOCK_TIME://获取锁时间
+                case GET_LOCK_TIME:
                     mTTLockAPI.getLockTime(extendedBluetoothDevice, curKey.getLockVersion(), curKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
-                case LOCKCAR_UP://车位锁升
+                case LOCKCAR_UP:
                     if(localKey.isAdmin())
                         mTTLockAPI.lockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr());
                     else
                         mTTLockAPI.lockByUser(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
 //                    mTTLockAPI.lockByUser(extendedBluetoothDevice, 0, localKey.getLockVersion(), 1489990922165l, 1490077322165l, localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
-                case LOCKCAR_DOWN://车位锁降
+                case LOCKCAR_DOWN:
                     if(localKey.isAdmin())
                         mTTLockAPI.unlockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), System.currentTimeMillis(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     else
                         mTTLockAPI.unlockByUser(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
 //                    mTTLockAPI.unlockByUser(extendedBluetoothDevice, 0, localKey.getLockVersion(), 1489990922165l, 1490077322165l, localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
-                case DELETE_ONE_KEYBOARDPASSWORD://这里的密码类型传0
+                case DELETE_ONE_KEYBOARDPASSWORD://set the keyboard password type to 0
                     mTTLockAPI.deleteOneKeyboardPassword(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), 0, bleSession.getPassword(), localKey.getAesKeystr());
                     break;
                 case GET_LOCK_VERSION_INFO:
@@ -178,14 +178,13 @@ public class MyApplication extends Application {
 
         @Override
         public void onDeviceDisconnected(ExtendedBluetoothDevice extendedBluetoothDevice) {
-            //默认是开门标志
+            //default is unlock flag
             bleSession.setOperation(Operation.UNLOCK);
-//            //断开连接
 //            broadcastUpdate(BleConstant.ACTION_BLE_DISCONNECTED, BleConstant.DEVICE, extendedBluetoothDevice);
 //            if(!operateSuccess) {
-//                toast("蓝牙已断开");
+//                toast("disconnected");
 //            }
-            LogUtil.d("蓝牙断开", DBG);
+            LogUtil.d("disconnected", DBG);
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
 
@@ -196,9 +195,8 @@ public class MyApplication extends Application {
 
         @Override
         public void onAddAdministrator(ExtendedBluetoothDevice extendedBluetoothDevice, String lockVersionString, String adminPs, String unlockKey, String adminKeyboardPwd, String deletePwd, String pwdInfo, long timestamp, String aesKeystr, int feature, String modelNumber, String hardwareRevision, String firmwareRevision, Error error) {
-            LogUtil.d("添加管理员:" + error + "," + "lockVersion--->" + lockVersionString+"电量------>"+extendedBluetoothDevice.getBatteryCapacity(), DBG);
+            LogUtil.d("add admin:" + error + "," + "lockVersion--->" + lockVersionString+"battery------>"+extendedBluetoothDevice.getBatteryCapacity(), DBG);
             if(error == Error.SUCCESS) {
-                //TODO:save数据
 //                operateSuccess = true;
                 final Key key = new Key();
                 key.setAccessToken(MyPreference.getStr(mContext, MyPreference.ACCESS_TOKEN));
@@ -215,7 +213,7 @@ public class MyApplication extends Application {
                 key.setAesKeystr(aesKeystr);
                 key.setSpecialValue(feature);
 
-                //获取当前时区偏移量
+                //The offset between your time zone and UTC, in millisecond
                 key.setTimezoneRawOffset(TimeZone.getDefault().getOffset(System.currentTimeMillis()));
                 key.setModelNumber(modelNumber);
                 key.setHardwareRevision(hardwareRevision);
@@ -254,7 +252,7 @@ public class MyApplication extends Application {
 
                     }
                 }.execute();
-            } else {//失败
+            } else {//failure
                 toast(error.getErrorMsg());
             }
         }
@@ -339,7 +337,7 @@ public class MyApplication extends Application {
         public void onGetLockTime(ExtendedBluetoothDevice extendedBluetoothDevice, long lockTime, Error error) {
             if(error == Error.SUCCESS) {
 //                operateSuccess = true;
-                //转换成锁时区时间
+                //convert the time by the lock time zone
                 String time = DateUitl.getTime(lockTime - TimeZone.getDefault().getOffset(System.currentTimeMillis()) + curKey.getTimezoneRawOffset(), "yyyy:MM:dd HH:mm");
                 toast(String.format(getString(R.string.words_lock_time), time));
             } else toast(error.getErrorMsg());
@@ -599,6 +597,16 @@ public class MyApplication extends Application {
 
         }
 
+        @Override
+        public void onOperateAudioSwitch(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int operateType, int state, Error error) {
+
+        }
+
+        @Override
+        public void onGetElectricQuantity(ExtendedBluetoothDevice extendedBluetoothDevice, int electricQuantity, Error error) {
+
+        }
+
     };
 
     ActivityLifecycleCallbacks callbacks = new ActivityLifecycleCallbacks() {
@@ -656,7 +664,7 @@ public class MyApplication extends Application {
     }
 
     /**
-     * 数据库初始化
+     * database initial
      */
     private void initGreenDao() {
 //        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, ENCRYPTED ? "ttlock-db-encrypted.db" : "ttlock-db.db");
@@ -668,7 +676,7 @@ public class MyApplication extends Application {
     }
 
     /**
-     * 通通锁初始化操作
+     * TTLock initial
      */
     private void initTTLock() {
         LogUtil.d("create TTLockAPI", DBG);

@@ -42,7 +42,6 @@
         <activity
             android:name=".activity.OperateActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.KeyListActivity" />
         <activity android:name=".activity.GetPasswordActivity" />
         <activity android:name=".activity.GatewayActivity" />
         <activity android:name=".activity.GatewayListActivity" />

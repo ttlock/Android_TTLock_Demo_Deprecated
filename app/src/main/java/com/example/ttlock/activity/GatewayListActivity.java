@@ -75,7 +75,6 @@ public class GatewayListActivity extends BaseActivity {
 
                             @Override
                             public void onItemLOngClick(RecyclerView.ViewHolder viewHolder) {
-//                                LogUtil.d("长按", true);
                                 position = viewHolder.getPosition();
                             }
                         });

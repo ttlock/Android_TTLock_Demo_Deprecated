@@ -6,13 +6,13 @@ package com.example.ttlock.model;
 
 public class FirmwareInfo {
 
-    public int errcode;//错误码
-    public String errmsg;//错误信息
+    public int errcode;//error code
+    public String errmsg;//error message
 
-    public int needUpgrade;//是否需要升级：0-否，1-是，2-未知
-    public int specialValue;//特征值
-    public String modelNum;//产品型号
-    public String hardwareRevision;//硬件版本号
-    public String firmwareRevision;//固件版本号
-    public String version;//最新的固件版本号
+    public int needUpgrade;//is need upgrade：0-no，1-yes，2-unknown
+    public int specialValue;//special value
+    public String modelNum;//Product model
+    public String hardwareRevision;
+    public String firmwareRevision;
+    public String version;//Latest version number
 }

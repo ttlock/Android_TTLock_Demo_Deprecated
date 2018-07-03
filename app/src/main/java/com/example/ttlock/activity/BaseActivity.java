@@ -46,12 +46,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog() {
-//        if(progressDialog == null) {
-//            progressDialog = new ProgressDialog(this);
-//            progressDialog.setMessage("请稍后……");
-//            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//        }
-//        progressDialog.show();
         showProgressDialog(getString(R.string.words_wait));
     }
 
@@ -96,20 +90,18 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 权限请求
+     * (permission request)
      * @param permission
      * @return
      */
     @TargetApi(Build.VERSION_CODES.M)
     public boolean requestPermission(String permission) {
-//        LogUtil.d("permission:" + permission, true);
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
 //                LogUtil.w("not grant", true);
                 return false;
             }
-            //请求权限
-//            LogUtil.d("请求权限", DBG);
+            //(permission request)
             requestPermissions(new String[]{permission}, REQUEST_PERMISSION_REQ_CODE);
             return false;
         }
@@ -121,8 +113,8 @@ public class BaseActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == REQUEST_PERMISSION_REQ_CODE) {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if(Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0]))//位置权限获取成功启动蓝牙
-                    LogUtil.d("位置权限授权成功", DBG);
+                if(Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0]))
+                    LogUtil.d("(Location permission granted)", DBG);
                     MyApplication.mTTLockAPI.startBTDeviceScan();
             } else {
                 LogUtil.w("Permission denied.", DBG);

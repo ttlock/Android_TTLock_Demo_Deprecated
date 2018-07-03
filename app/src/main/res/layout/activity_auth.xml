@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="账号"
+            android:text="@string/words_account"
             android:textSize="16dp"
             android:layout_centerVertical="true"
             android:textColor="@android:color/black"/>
@@ -28,7 +28,7 @@
             android:layout_width="fill_parent"
             android:layout_height="48dp"
             android:background="@null"
-            android:hint="请输入用户名"
+            android:hint="@string/words_enter_account"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="15sp"
             android:paddingLeft="10dp"/>
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="密码"
+            android:text="@string/words_password"
             android:textSize="16dp"
             android:layout_centerVertical="true"
             android:textColor="@android:color/black"/>
@@ -53,7 +53,7 @@
             android:layout_width="fill_parent"
             android:layout_height="48dp"
             android:background="@null"
-            android:hint="请输入密码"
+            android:hint="@string/words_enter_password"
             android:textColorHint="@android:color/darker_gray"
             android:inputType="textPassword"
             android:textSize="15sp"
@@ -68,7 +68,7 @@
         android:layout_marginTop="15dp"
         android:background="@android:color/holo_blue_bright"
         android:gravity="center"
-        android:text="授权"
+        android:text="@string/words_authorize"
         android:textColor="@android:color/white"
         android:textSize="18sp"/>
 
@@ -90,7 +90,7 @@
             android:layout_width="fill_parent"
             android:layout_height="48dp"
             android:background="@null"
-            android:hint="访问令牌"
+            android:hint="@string/words_access_token"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="15sp"
             android:paddingLeft="10dp"/>
@@ -114,7 +114,7 @@
             android:layout_width="fill_parent"
             android:layout_height="48dp"
             android:background="@null"
-            android:hint="开放的通通锁用户id"
+            android:hint="@string/words_open_id_info"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="15sp"
             android:paddingLeft="10dp"/>

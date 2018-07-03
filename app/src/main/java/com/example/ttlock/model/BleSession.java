@@ -9,17 +9,17 @@ import com.example.ttlock.enumtype.Operation;
 public class BleSession {
 
     /**
-     * 操作
+     * operation
      */
     private Operation operation;
 
     /**
-     * mac地址
+     * lock mac
      */
     private String lockmac;
 
     /**
-     * 密码
+     * passcode
      */
     private String password;
 
