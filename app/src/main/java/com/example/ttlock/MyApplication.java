@@ -85,10 +85,10 @@ public class MyApplication extends Application {
             if(localKey != null) {
 //                operateSuccess = false;
                 switch (bleSession.getOperation()) {
-                    case UNLOCK:
-                        if(extendedBluetoothDevice.isTouch())
-                             mTTLockAPI.connect(extendedBluetoothDevice);
-                        break;
+//                    case UNLOCK:
+//                        if(extendedBluetoothDevice.isTouch())
+//                             mTTLockAPI.connect(extendedBluetoothDevice);
+//                        break;
                     case SET_ADMIN_KEYBOARD_PASSWORD:
                     case SET_DELETE_PASSWORD:
                     case SET_LOCK_TIME:
