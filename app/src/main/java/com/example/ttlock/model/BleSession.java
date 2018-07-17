@@ -23,6 +23,10 @@ public class BleSession {
      */
     private String password;
 
+    private long startDate;
+
+    private long endDate;
+
     public Operation getOperation() {
         return operation;
     }
@@ -41,6 +45,22 @@ public class BleSession {
 
     public String getPassword() {
         return password;
+    }
+
+    public long getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(long startDate) {
+        this.startDate = startDate;
+    }
+
+    public long getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(long endDate) {
+        this.endDate = endDate;
     }
 
     public void setPassword(String password) {

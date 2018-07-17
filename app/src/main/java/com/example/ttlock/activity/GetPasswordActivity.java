@@ -3,6 +3,7 @@ package com.example.ttlock.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,11 +12,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
+import com.example.ttlock.MyApplication;
 import com.example.ttlock.R;
 import com.example.ttlock.constant.ConstantKey;
+import com.example.ttlock.enumtype.Operation;
 import com.example.ttlock.model.Key;
 import com.example.ttlock.model.KeyboardPasswdType;
 import com.example.ttlock.net.ResponseService;
+import com.example.ttlock.view.MultiButtonDialog;
 import com.example.ttlock.wheel.WheelViewDialog;
 import com.ttlock.bl.sdk.util.LogUtil;
 
@@ -44,6 +48,9 @@ public class GetPasswordActivity extends BaseActivity {
 
     @BindView(R.id.once)
     RadioButton onceView;
+
+    @BindView(R.id.customized)
+    RadioButton customizedView;
 
     @BindView(R.id.loop_value)
     TextView loopValueView;
@@ -87,6 +94,8 @@ public class GetPasswordActivity extends BaseActivity {
 
     private Key key;
 
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,22 +120,26 @@ public class GetPasswordActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.permanent, R.id.period, R.id.loop, R.id.once, R.id.start_time_layout, R.id.end_time_layout, R.id.password, R.id.loop_value})
+    @OnClick({R.id.permanent, R.id.period, R.id.loop, R.id.once, R.id.start_time_layout, R.id.end_time_layout, R.id.password, R.id.loop_value, R.id.customized})
     void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.permanent:
+                passwordView.setText(R.string.words_get_passcode);
                 hourOnly = false;
                 keyboardPwdType = KeyboardPasswdType.PERMENANT;
                 loopLayout.setVisibility(View.GONE);
                 endTimeLayout.setVisibility(View.GONE);
                 break;
             case R.id.period:
+                passwordView.setText(R.string.words_get_passcode);
                 hourOnly = false;
                 keyboardPwdType = KeyboardPasswdType.PERIOD;
                 loopLayout.setVisibility(View.GONE);
                 endTimeLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.loop:
+                passwordView.setText(R.string.words_get_passcode);
                 hourOnly = true;
                 keyboardPwdType = KeyboardPasswdType.WEEKENDREPETUAL;
                 loopValueView.setText("weekend");
@@ -134,6 +147,7 @@ public class GetPasswordActivity extends BaseActivity {
                 endTimeLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.once:
+                passwordView.setText(R.string.words_get_passcode);
                 hourOnly = false;
                 keyboardPwdType = KeyboardPasswdType.ONCE;
                 loopLayout.setVisibility(View.GONE);
@@ -160,7 +174,7 @@ public class GetPasswordActivity extends BaseActivity {
                 } else {
                     timePickerView = new TimePickerView(GetPasswordActivity.this, TimePickerView.Type.ALL);
                     timePickerView.setCyclic(false);
-                    timePickerView.setRange(2017, 2020);
+                    timePickerView.setRange(2018, 2021);
                     timePickerView.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date) throws ParseException {
@@ -208,6 +222,10 @@ public class GetPasswordActivity extends BaseActivity {
                 timePickerView.show();
                 break;
             case R.id.password:
+                if (customizedView.isChecked()) {
+                    showSetPasscodeDialog();
+                    break;
+                }
                 new AsyncTask<Void, Integer, String>() {
                     @Override
                     protected String doInBackground(Void... params) {
@@ -234,6 +252,42 @@ public class GetPasswordActivity extends BaseActivity {
             case R.id.loop_value:
                 showWheelView();
                 break;
+            case R.id.customized:
+                endTimeLayout.setVisibility(View.VISIBLE);
+                passwordView.setText(R.string.words_set_passcode);
+                break;
+        }
+    }
+
+    private void showSetPasscodeDialog() {
+        final MultiButtonDialog dialog = new MultiButtonDialog(this, true);
+        dialog.show();
+        dialog.setInputTypeNumber();
+        dialog.setInputMaxLength(9);
+        dialog.setInputCharacteristic("0123456789");
+        dialog.setEditInputHint(R.string.input_keyboard_passcode_notify);
+        dialog.setPositiveClickListener(new MultiButtonDialog.PositiveClickListener() {
+            @Override
+            public void onPositiveClick(String inputContent) {
+                dialog.cancel();
+                password = inputContent;
+                if (!TextUtils.isEmpty(password))
+                    addByBle();
+            }
+        });
+    }
+
+    private void addByBle() {
+        if (MyApplication.mTTLockAPI.isBLEEnabled(this)) {
+            showProgressDialog(getString(R.string.words_wait));
+            MyApplication.bleSession.setPassword(password);
+
+            MyApplication.bleSession.setStartDate(startDate);
+            MyApplication.bleSession.setEndDate(endDate);
+            MyApplication.bleSession.setOperation(Operation.ADD_PASSCODE);
+            MyApplication.mTTLockAPI.connect(key.getLockMac());
+        } else {
+            MyApplication.mTTLockAPI.requestBleEnable(this);
         }
     }
 

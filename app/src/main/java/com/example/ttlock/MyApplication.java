@@ -97,6 +97,7 @@ public class MyApplication extends Application {
                     case RESET_LOCK:
                     case GET_LOCK_TIME:
                     case GET_OPERATE_LOG:
+                    case ADD_PASSCODE:
                         if(extendedBluetoothDevice.getAddress().equals(bleSession.getLockmac()))
                             mTTLockAPI.connect(extendedBluetoothDevice);
                         break;
@@ -172,6 +173,9 @@ public class MyApplication extends Application {
                     break;
                 case GET_LOCK_VERSION_INFO:
                     mTTLockAPI.readDeviceInfo(extendedBluetoothDevice, localKey.getLockVersion(), localKey.getAesKeystr());
+                    break;
+                case ADD_PASSCODE:
+                    mTTLockAPI.addPeriodKeyboardPassword(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), bleSession.getPassword(), bleSession.getStartDate(), bleSession.getEndDate(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
             }
         }
@@ -397,8 +401,15 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onAddKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, long l, long l1, Error error) {
+        public void onAddKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int keyboardPwdType, String password, long startDate, long endDate, Error error) {
+            if(error == Error.SUCCESS) {
+                String msg = getString(R.string.words_password) + ":" + password + "\n"
+                        + getString(R.string.words_perido) + ":" + DateUitl.getTime(startDate)
+                        + "-" + DateUitl.getTime(endDate);
+                toast(msg);
 
+            } else toast(error.getErrorMsg());
+            ((BaseActivity)curActivity).cancelProgressDialog();
         }
 
         @Override

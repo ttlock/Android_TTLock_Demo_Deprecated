@@ -84,5 +84,9 @@ public enum Operation {
      * get lock version information
      */
     GET_LOCK_VERSION_INFO,
+    /**
+     * add customized passcode
+     */
+    ADD_PASSCODE,
 
 }

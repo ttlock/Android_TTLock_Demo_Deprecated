@@ -119,4 +119,13 @@
     <string name="words_admin">管理员</string>
     <string name="words_user">普通用户</string>
     <string name="words_battery">电量</string>
+    <string name="words_customized_passcode">自定义</string>
+
+    <string name="words_start_date">起始时间</string>
+    <string name="words_end_date">结束时间</string>
+    <string name="words_get_passcode">获取密码</string>
+    <string name="words_set_passcode">设置密码</string>
+    <string name="input_keyboard_passcode_notify">请输入4-9位数字</string>
+    <string name="words_perido">期限</string>
+    <string name="words_passcode_list">获取密码列表</string>
 </resources>

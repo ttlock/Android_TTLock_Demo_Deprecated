@@ -118,4 +118,13 @@
     <string name="words_admin">admin</string>
     <string name="words_user">user</string>
     <string name="words_battery">battery</string>
+    <string name="words_customized_passcode">customized</string>
+    
+    <string name="words_start_date">Start Date</string>
+    <string name="words_end_date">End Date</string>
+    <string name="words_get_passcode">Get Passcode</string>
+    <string name="words_set_passcode">Set Passcode</string>
+    <string name="input_keyboard_passcode_notify">4 - 9 Digits in length</string>
+    <string name="words_perido">period</string>
+    <string name="words_passcode_list">Passcode List</string>
 </resources>

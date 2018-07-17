@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action"
         android:orderInCategory="100"
-        android:title="获取密码列表"
+        android:title="@string/words_passcode_list"
         app:showAsAction="always" />
 </menu>
