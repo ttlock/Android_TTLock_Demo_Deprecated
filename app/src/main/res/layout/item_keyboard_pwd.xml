@@ -24,7 +24,7 @@
             android:background="@android:color/holo_red_light"
             android:textColor="@android:color/black"
             android:gravity="center"
-            android:text="通过网关删除"/>
+            android:text="@string/words_delete_by_gateway"/>
         <TextView
             android:layout_marginLeft="10dp"
             android:id="@+id/deleteByBle"
@@ -34,7 +34,7 @@
             android:layout_height="50dp"
             android:textColor="@android:color/black"
             android:gravity="center"
-            android:text="通过蓝牙删除"/>
+            android:text="@string/words_delete_by_bluetooth"/>
         <TextView
             android:padding="3dp"
             android:layout_width="wrap_content"

@@ -404,21 +404,20 @@ public class MyApplication extends Application {
         public void onAddKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int keyboardPwdType, String password, long startDate, long endDate, Error error) {
             if(error == Error.SUCCESS) {
                 String msg = getString(R.string.words_password) + ":" + password + "\n"
-                        + getString(R.string.words_perido) + ":" + DateUitl.getTime(startDate)
+                        + getString(R.string.words_period) + ":" + DateUitl.getTime(startDate)
                         + "-" + DateUitl.getTime(endDate);
                 toast(msg);
-
             } else toast(error.getErrorMsg());
             ((BaseActivity)curActivity).cancelProgressDialog();
         }
 
         @Override
-        public void onModifyKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, String s1, Error error) {
+        public void onModifyKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int keyboardPwdType, String originPwd, String newPwd, Error error) {
 
         }
 
         @Override
-        public void onDeleteOneKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int keyboardPwdTypei, String deletedPwd, Error error) {
+        public void onDeleteOneKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int keyboardPwdType, String deletedPwd, Error error) {
             if(error == Error.SUCCESS) {
                 toast(getString(R.string.words_delete_password_successed));
                 if(operateCallback != null)
@@ -471,22 +470,22 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onAddICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int status, int i, long l, Error error) {
+        public void onAddICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int status, int battery, long cardNo, Error error) {
 
         }
 
         @Override
-        public void onModifyICCardPeriod(ExtendedBluetoothDevice extendedBluetoothDevice, int i, long l, long l1, long l2, Error error) {
+        public void onModifyICCardPeriod(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, long cardNo, long startDate, long endDate, Error error) {
 
         }
 
         @Override
-        public void onDeleteICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int i, long l, Error error) {
+        public void onDeleteICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, long cardNo, Error error) {
 
         }
 
         @Override
-        public void onClearICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+        public void onClearICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
 
         }
 
@@ -506,37 +505,37 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onAddFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int status, int i, long l, Error error) {
+        public void onAddFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int status, int battery, long fingerPrintNo, Error error) {
 
         }
 
         @Override
-        public void onAddFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, long l, int i2, Error error) {
+        public void onAddFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int status, int battery, long fingerPrintNo, int totalCount, Error error) {
 
         }
 
         @Override
-        public void onFingerPrintCollection(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+        public void onFingerPrintCollection(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
 
         }
 
         @Override
-        public void onFingerPrintCollection(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, Error error) {
+        public void onFingerPrintCollection(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int currentCount, int totalCount, Error error) {
 
         }
 
         @Override
-        public void onModifyFingerPrintPeriod(ExtendedBluetoothDevice extendedBluetoothDevice, int i, long l, long l1, long l2, Error error) {
+        public void onModifyFingerPrintPeriod(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, long fingerPrintNo, long startDate, long endDate, Error error) {
 
         }
 
         @Override
-        public void onDeleteFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int i, long l, Error error) {
+        public void onDeleteFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, long fingerPrintNo, Error error) {
 
         }
 
         @Override
-        public void onClearFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+        public void onClearFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
 
         }
 

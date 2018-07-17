@@ -118,7 +118,7 @@ public class KeyboardPwdListAdapter extends RecyclerView.Adapter<KeyboardPwdList
                                     if(errcode != 0) {
                                         msg = jsonObject.getString("errmsg");
                                     } else {
-                                        msg = "delete password successed by server";
+                                        msg = "delete passcode successed by server";
                                         keyboardPwds.remove(position);
                                         notifyDataSetChanged();
                                     }

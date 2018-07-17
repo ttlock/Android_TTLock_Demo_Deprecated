@@ -64,8 +64,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void cancelProgressDialog() {
-        if(progressDialog != null)
-            progressDialog.cancel();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(progressDialog != null)
+                    progressDialog.cancel();
+            }
+        });
     }
 
     protected final <V extends View> V getView(int id) {
@@ -74,6 +79,10 @@ public class BaseActivity extends AppCompatActivity {
 
     protected final <V extends View> V getView(View parent, int id) {
         return (V) parent.findViewById(id);
+    }
+
+    public void toast(int resId) {
+        toast(getString(resId));
     }
 
     public final void toast(final String msg) {

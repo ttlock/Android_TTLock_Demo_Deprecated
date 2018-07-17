@@ -126,6 +126,14 @@
     <string name="words_get_passcode">获取密码</string>
     <string name="words_set_passcode">设置密码</string>
     <string name="input_keyboard_passcode_notify">请输入4-9位数字</string>
-    <string name="words_perido">期限</string>
+
     <string name="words_passcode_list">获取密码列表</string>
+    <string name="words_delete_by_bluetooth">通过蓝牙删除</string>
+    <string name="words_delete_by_gateway">通过网关删除</string>
+    <string name="words_permanent">永久</string>
+    <string name="words_period">期限</string>
+    <string name="words_cyclic">循环</string>
+    <string name="words_once">单次</string>
+    <string name="words_not_null">不能为空</string>
+    <string name="valid_length">密码位数有误</string>
 </resources>

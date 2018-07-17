@@ -125,6 +125,14 @@
     <string name="words_get_passcode">Get Passcode</string>
     <string name="words_set_passcode">Set Passcode</string>
     <string name="input_keyboard_passcode_notify">4 - 9 Digits in length</string>
-    <string name="words_perido">period</string>
+
     <string name="words_passcode_list">Passcode List</string>
+    <string name="words_delete_by_bluetooth">delete by bluetooth</string>
+    <string name="words_delete_by_gateway">delete by gateway</string>
+    <string name="words_permanent">Permanent</string>
+    <string name="words_period">Period</string>
+    <string name="words_cyclic">Cyclic</string>
+    <string name="words_once">Once</string>
+    <string name="words_not_null">Can\'t be NULL.</string>
+    <string name="valid_length">Invalid Passcode Length</string>
 </resources>

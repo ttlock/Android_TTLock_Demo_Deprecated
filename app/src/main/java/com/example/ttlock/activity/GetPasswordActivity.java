@@ -254,6 +254,7 @@ public class GetPasswordActivity extends BaseActivity {
                 break;
             case R.id.customized:
                 endTimeLayout.setVisibility(View.VISIBLE);
+                loopLayout.setVisibility(View.GONE);
                 passwordView.setText(R.string.words_set_passcode);
                 break;
         }
@@ -271,8 +272,12 @@ public class GetPasswordActivity extends BaseActivity {
             public void onPositiveClick(String inputContent) {
                 dialog.cancel();
                 password = inputContent;
-                if (!TextUtils.isEmpty(password))
-                    addByBle();
+                if (!TextUtils.isEmpty(password)) {
+                    if (password.length() < 4 || password.length() > 9)
+                        toast(R.string.valid_length);
+                    else
+                        addByBle();
+                } else toast(R.string.words_not_null);
             }
         });
     }
