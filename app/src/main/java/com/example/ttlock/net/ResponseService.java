@@ -40,34 +40,15 @@ public class ResponseService {
     /**
      * Call this api after calling SDK method to add a lock. This api will create an admin ekey for current user.
      * After initializing a lock, the admin can send ekey or create passcode for others.
-     * @param key
      * @return
      */
-    public static String lockInit(Key key) {
-        String url = actionUrlV3 + "/lock/init";
+    public static String lockInit(String lockData, String lockAlias) {
+        String url = actionUrlV3 + "/lock/initialize";
         HashMap params = new HashMap();
         params.put("clientId", Config.CLIENT_ID);
         params.put("accessToken", MyPreference.getStr(MyApplication.mContext, MyPreference.ACCESS_TOKEN));
-        params.put("lockName", key.getLockName());
-        params.put("lockAlias", key.getLockAlias());
-        params.put("lockMac", key.getLockMac());
-        params.put("lockKey", key.getUnlockKey());
-        params.put("lockFlagPos", String.valueOf(key.getLockFlagPos()));
-        params.put("aesKeyStr", key.getAesKeystr());
-        params.put("lockVersion", key.getLockVersion());
-
-        params.put("adminPwd", key.getAdminPs());
-        params.put("noKeyPwd", key.getAdminKeyboardPwd());
-        params.put("deletePwd", key.getDeletePwd());
-        params.put("pwdInfo", key.getPwdInfo());
-        params.put("timestamp", String.valueOf(key.getTimestamp()));
-        params.put("specialValue", String.valueOf(key.getSpecialValue()));
-        params.put("timezoneRawOffset", String.valueOf(key.getTimezoneRawOffset()));
-
-        params.put("modelNum", key.getModelNumber());
-        params.put("hardwareRevision", key.getHardwareRevision());
-        params.put("firmwareRevision", key.getFirmwareRevision());
-
+        params.put("lockAlias", lockAlias);
+        params.put("lockData", lockData);
         params.put("date", String.valueOf(System.currentTimeMillis()));
         return OkHttpRequest.sendPost(url, params);
     }

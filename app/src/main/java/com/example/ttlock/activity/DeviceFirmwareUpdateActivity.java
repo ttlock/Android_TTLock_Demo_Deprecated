@@ -148,7 +148,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
 
     private void getLockFirmware() {
         showProgressDialog();
-        deviceFirmwareUpdateApi.getLockFirmware(mKey.getLockMac(), mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr());
+        deviceFirmwareUpdateApi.getLockFirmware(mKey.getLockMac(), mKey.getLockVersion(), mKey.getAdminPwd(), mKey.getLockKey(), mKey.getLockFlagPos(), mKey.getAesKeyStr());
 //        MyApplication.bleSession.setOperation(Operation.GET_LOCK_VERSION_INFO);
 //        MyApplication.bleSession.setLockmac(mKey.getLockMac());
 //        mTTLockAPI.connect(mKey.getLockMac());
@@ -264,7 +264,7 @@ public class DeviceFirmwareUpdateActivity extends BaseActivity {
                 dialog.cancel();
                 showProgressDialog();
                 deviceFirmwareUpdateApi.upgradeFirmware(Config.CLIENT_ID, MyPreference.getStr(MyApplication.mContext, MyPreference.ACCESS_TOKEN),
-                        mKey.getLockId(), firmwareInfo.modelNum, firmwareInfo.hardwareRevision, firmwareInfo.firmwareRevision, mKey.getLockMac(), mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mKey.getLockId(), firmwareInfo.modelNum, firmwareInfo.hardwareRevision, firmwareInfo.firmwareRevision, mKey.getLockMac(), mKey.getLockVersion(), mKey.getAdminPwd(), mKey.getLockKey(), mKey.getLockFlagPos(), mKey.getAesKeyStr(), mKey.getTimezoneRawOffset());
             }
         });
     }

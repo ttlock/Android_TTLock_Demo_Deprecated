@@ -36,7 +36,7 @@ public class Gateway implements Parcelable {
     }
 
     public boolean isOnline() {
-        return isOnline == 1 ? true : false;
+        return isOnline == 1;
     }
 
     public void setIsOnline(int isOnline) {

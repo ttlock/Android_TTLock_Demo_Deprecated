@@ -7,5 +7,4 @@
     <string name="pickerview_day">日</string>
     <string name="pickerview_hours">时</string>
     <string name="pickerview_minutes">分</string>
-    <string name="pickerview_seconds">秒</string>
 </resources>

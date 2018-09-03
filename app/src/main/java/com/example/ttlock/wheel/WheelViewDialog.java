@@ -33,7 +33,7 @@ public class WheelViewDialog extends Dialog {
     public TextView btnSure, btnCancel;
 
     public interface ICustomDialogEventListener {
-        public void customDialogEvent(String circleModeValue, int position);
+        void customDialogEvent(String circleModeValue, int position);
     }
 
     private ICustomDialogEventListener onCustomDialogEventListener;

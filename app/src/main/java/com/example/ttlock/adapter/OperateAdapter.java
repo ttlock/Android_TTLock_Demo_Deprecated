@@ -50,7 +50,7 @@ public class OperateAdapter extends BaseAdapter {
         TextView valueView = viewHolder.getView(R.id.value);
         switch (position) {
             case Operate.SET_ADMIN_CODE:
-                valueView.setText(mKey.getAdminKeyboardPwd());
+                valueView.setText(mKey.getNoKeyPwd());
                 break;
             case Operate.SET_DELETE_CODE:
                 valueView.setText(mKey.getDeletePwd());

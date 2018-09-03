@@ -66,9 +66,7 @@ public class FoundDeviceAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        if(((ExtendedBluetoothDevice)getItem(position)).isSettingMode())
-            return true;
-        return false;
+        return ((ExtendedBluetoothDevice) getItem(position)).isSettingMode();
     }
 
     @Override

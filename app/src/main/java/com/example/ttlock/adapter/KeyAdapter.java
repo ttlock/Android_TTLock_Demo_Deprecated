@@ -47,7 +47,7 @@ public class KeyAdapter extends BaseAdapter {
         Key key = keys.get(position);
         ((TextView)viewHolder.getView(R.id.lockname)).setText(key.getLockName());
         ((TextView)viewHolder.getView(R.id.identity)).setText(key.isAdmin() ? mContext.getResources().getString(R.string.words_admin) : mContext.getResources().getString(R.string.words_user));
-        ((TextView)viewHolder.getView(R.id.battery)).setText(mContext.getResources().getString(R.string.words_battery) + ":" + key.getBattery());
+        ((TextView)viewHolder.getView(R.id.battery)).setText(mContext.getResources().getString(R.string.words_battery) + ":" + key.getElectricQuantity());
         return viewHolder.getConvertView();
     }
 }

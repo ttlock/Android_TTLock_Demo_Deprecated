@@ -18,26 +18,24 @@ public class DbService {
     private static KeyDao keyDao = daoSession.getKeyDao();
     private static QueryBuilder queryBuilder = keyDao.queryBuilder();
 
-    /**
-     * get keys by accessToken
-     * @param accessToken
-     * @return
-     */
-    public static List<Key> getKeysByAccessToken(String accessToken) {
-        queryBuilder = keyDao.queryBuilder();
-       return queryBuilder.where(KeyDao.Properties.AccessToken.eq(accessToken)).list();
-    }
+//    /**
+//     * get keys by accessToken
+//     * @param accessToken
+//     * @return
+//     */
+//    public static List<Key> getKeysByAccessToken(String accessToken) {
+//        queryBuilder = keyDao.queryBuilder();
+//       return queryBuilder.where(KeyDao.Properties.AccessToken.eq(accessToken)).list();
+//    }
 
     /**
      * get key by accessToken and lockmac
-     * @param accessToken
      * @param lockmac
      * @return
      */
-    public static Key getKeyByAccessTokenAndLockmac(String accessToken, String lockmac) {
+    public static Key getKeyByLockmac(String lockmac) {
         queryBuilder = keyDao.queryBuilder();
-       List<Key> keys = queryBuilder.where(KeyDao.Properties.AccessToken.eq(accessToken),
-               KeyDao.Properties.LockMac.eq(lockmac)).list();
+       List<Key> keys = queryBuilder.where(KeyDao.Properties.LockMac.eq(lockmac)).list();
         if(keys.size() > 0) {
 //            LogUtil.d("keys.size():" + keys.size(), DBG);
 //            LogUtil.d("key:" + keys.get(0).toString(), DBG);

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
 
     defaultConfig {
@@ -52,10 +52,10 @@ android {
 
 
 
-def supportVersion = "25.3.1"
+def supportVersion = "26.1.0"
 
 dependencies {
-    provided fileTree(include: ['*.jar'], dir: 'libs')
+    provided fileTree(include: ['*.jar','*.aar'], dir: 'libs')
 //    compile fileTree(include: ['*.jar'], dir: 'libs')
         compile "com.android.support:appcompat-v7:${supportVersion}"
         compile "com.android.support:design:${supportVersion}"
@@ -71,12 +71,14 @@ dependencies {
 //    compile 'com.android.support:appcompat-v7:25.1.0'
 //    compile 'com.android.support:design:25.1.0'
     compile 'org.greenrobot:greendao:3.1.1'
-    compile 'org.greenrobot:greendao-generator-encryption:2.2.0'
+    compile'org.greenrobot:greendao-generator:3.1.0'
+//    compile 'org.greenrobot:greendao-generator-encryption:2.2.0'
     compile 'net.zetetic:android-database-sqlcipher:3.4.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //DeviceFirmwareUpdateApi need dfu dependency
     compile 'no.nordicsemi.android:dfu:1.1.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'

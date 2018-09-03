@@ -26,7 +26,9 @@ import com.example.ttlock.sp.MyPreference;
 import com.example.ttlock.utils.DateUitl;
 import com.ttlock.bl.sdk.api.TTLockAPI;
 import com.ttlock.bl.sdk.callback.TTLockCallback;
+import com.ttlock.bl.sdk.entity.DeviceInfo;
 import com.ttlock.bl.sdk.entity.Error;
+import com.ttlock.bl.sdk.entity.LockData;
 import com.ttlock.bl.sdk.scanner.ExtendedBluetoothDevice;
 import com.ttlock.bl.sdk.util.LogUtil;
 
@@ -81,7 +83,7 @@ public class MyApplication extends Application {
             //found device and broadcast
             broadcastUpdate(BleConstant.ACTION_BLE_DEVICE, BleConstant.DEVICE, extendedBluetoothDevice);
             String accessToken = MyPreference.getStr(mContext, MyPreference.ACCESS_TOKEN);
-            Key localKey = DbService.getKeyByAccessTokenAndLockmac(accessToken, extendedBluetoothDevice.getAddress());
+            Key localKey = DbService.getKeyByLockmac(extendedBluetoothDevice.getAddress());
             if(localKey != null) {
 //                operateSuccess = false;
                 switch (bleSession.getOperation()) {
@@ -108,8 +110,9 @@ public class MyApplication extends Application {
         @Override
         public void onDeviceConnected(ExtendedBluetoothDevice extendedBluetoothDevice) {
             LogUtil.d("bleSession.getOperation():" + bleSession.getOperation(), DBG);
+
             String accessToken = MyPreference.getStr(mContext, MyPreference.ACCESS_TOKEN);
-            Key localKey = DbService.getKeyByAccessTokenAndLockmac(accessToken, extendedBluetoothDevice.getAddress());
+            Key localKey = DbService.getKeyByLockmac(extendedBluetoothDevice.getAddress());
             curKey = MainActivity.curKey;
             //uid equal to openid
             int uid = MyPreference.getOpenid(mContext, MyPreference.OPEN_ID);
@@ -117,65 +120,68 @@ public class MyApplication extends Application {
             switch (bleSession.getOperation()) {
                 case ADD_ADMIN:
                     if (localKey == null)
-                        mTTLockAPI.addAdministrator(extendedBluetoothDevice);
-                    else Toast.makeText(mContext, R.string.words_has_exist_lock, Toast.LENGTH_LONG).show();
+                        mTTLockAPI.lockInitialize(extendedBluetoothDevice);
+                    else {
+                        toast(getString(R.string.words_has_exist_lock));
+                        ((BaseActivity) curActivity).cancelProgressDialog();
+                    }
                     break;
                 case UNLOCK:
                 case CLICK_UNLOCK:
                     if(localKey != null) {
                         if(localKey.isAdmin())
-                            mTTLockAPI.unlockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), System.currentTimeMillis(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
+                            mTTLockAPI.unlockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPwd(), localKey.getLockKey(), localKey.getLockFlagPos(), System.currentTimeMillis(), localKey.getAesKeyStr(), localKey.getTimezoneRawOffset());
                         else
-                            mTTLockAPI.unlockByUser(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
+                            mTTLockAPI.unlockByUser(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getLockKey(), localKey.getLockFlagPos(), localKey.getAesKeyStr(), localKey.getTimezoneRawOffset());
                     }
 //                    mTTLockAPI.unlockByUser(extendedBluetoothDevice, 0, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getUnlockKey(), 0, localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
                 case SET_ADMIN_KEYBOARD_PASSWORD:
-                    mTTLockAPI.setAdminKeyboardPassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr(), bleSession.getPassword());
+                    mTTLockAPI.setAdminKeyboardPassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr(), bleSession.getPassword());
                     break;
                 case SET_DELETE_PASSWORD:
-                    mTTLockAPI.setDeletePassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr(), bleSession.getPassword());
+                    mTTLockAPI.setDeletePassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr(), bleSession.getPassword());
                     break;
                 case SET_LOCK_TIME:
-                    mTTLockAPI.setLockTime(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getUnlockKey(), System.currentTimeMillis(), curKey.getLockFlagPos(), curKey.getAesKeystr(), curKey.getTimezoneRawOffset());
+                    mTTLockAPI.setLockTime(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), System.currentTimeMillis(), curKey.getLockFlagPos(), curKey.getAesKeyStr(), curKey.getTimezoneRawOffset());
                     break;
                 case RESET_KEYBOARD_PASSWORD:
-                    mTTLockAPI.resetKeyboardPassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr());
+                    mTTLockAPI.resetKeyboardPassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr());
                     break;
                 case RESET_EKEY://reset ekey, lockFlagPos +1
-                    mTTLockAPI.resetEKey(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
+                    mTTLockAPI.resetEKey(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockFlagPos() + 1, curKey.getAesKeyStr());
                     break;
                 case RESET_LOCK:
-                    mTTLockAPI.resetLock(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr());
+                    mTTLockAPI.resetLock(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr());
                     break;
                 case GET_OPERATE_LOG:
-                    mTTLockAPI.getOperateLog(extendedBluetoothDevice, curKey.getLockVersion(), curKey.getAesKeystr(), localKey.getTimezoneRawOffset());
+                    mTTLockAPI.getOperateLog(extendedBluetoothDevice, curKey.getLockVersion(), curKey.getAesKeyStr(), localKey.getTimezoneRawOffset());
                     break;
                 case GET_LOCK_TIME:
-                    mTTLockAPI.getLockTime(extendedBluetoothDevice, curKey.getLockVersion(), curKey.getAesKeystr(), localKey.getTimezoneRawOffset());
+                    mTTLockAPI.getLockTime(extendedBluetoothDevice, curKey.getLockVersion(), curKey.getAesKeyStr(), localKey.getTimezoneRawOffset());
                     break;
                 case LOCKCAR_UP:
                     if(localKey.isAdmin())
-                        mTTLockAPI.lockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr());
+                        mTTLockAPI.lockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPwd(), localKey.getLockKey(), localKey.getLockFlagPos(), localKey.getAesKeyStr());
                     else
-                        mTTLockAPI.lockByUser(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
+                        mTTLockAPI.lockByUser(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getLockKey(), localKey.getLockFlagPos(), localKey.getAesKeyStr(), localKey.getTimezoneRawOffset());
 //                    mTTLockAPI.lockByUser(extendedBluetoothDevice, 0, localKey.getLockVersion(), 1489990922165l, 1490077322165l, localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
                 case LOCKCAR_DOWN:
                     if(localKey.isAdmin())
-                        mTTLockAPI.unlockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), System.currentTimeMillis(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByAdministrator(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPwd(), localKey.getLockKey(), localKey.getLockFlagPos(), System.currentTimeMillis(), localKey.getAesKeyStr(), localKey.getTimezoneRawOffset());
                     else
-                        mTTLockAPI.unlockByUser(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByUser(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getStartDate(), localKey.getEndDate(), localKey.getLockKey(), localKey.getLockFlagPos(), localKey.getAesKeyStr(), localKey.getTimezoneRawOffset());
 //                    mTTLockAPI.unlockByUser(extendedBluetoothDevice, 0, localKey.getLockVersion(), 1489990922165l, 1490077322165l, localKey.getUnlockKey(), localKey.getLockFlagPos(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
                     break;
                 case DELETE_ONE_KEYBOARDPASSWORD://set the keyboard password type to 0
-                    mTTLockAPI.deleteOneKeyboardPassword(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), 0, bleSession.getPassword(), localKey.getAesKeystr());
+                    mTTLockAPI.deleteOneKeyboardPassword(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPwd(), localKey.getLockKey(), localKey.getLockFlagPos(), 0, bleSession.getPassword(), localKey.getAesKeyStr());
                     break;
                 case GET_LOCK_VERSION_INFO:
-                    mTTLockAPI.readDeviceInfo(extendedBluetoothDevice, localKey.getLockVersion(), localKey.getAesKeystr());
+                    mTTLockAPI.readDeviceInfo(extendedBluetoothDevice, localKey.getLockVersion(), localKey.getAesKeyStr());
                     break;
                 case ADD_PASSCODE:
-                    mTTLockAPI.addPeriodKeyboardPassword(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPs(), localKey.getUnlockKey(), localKey.getLockFlagPos(), bleSession.getPassword(), bleSession.getStartDate(), bleSession.getEndDate(), localKey.getAesKeystr(), localKey.getTimezoneRawOffset());
+                    mTTLockAPI.addPeriodKeyboardPassword(extendedBluetoothDevice, uid, localKey.getLockVersion(), localKey.getAdminPwd(), localKey.getLockKey(), localKey.getLockFlagPos(), bleSession.getPassword(), bleSession.getStartDate(), bleSession.getEndDate(), localKey.getAesKeyStr(), localKey.getTimezoneRawOffset());
                     break;
             }
         }
@@ -198,30 +204,12 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onAddAdministrator(ExtendedBluetoothDevice extendedBluetoothDevice, String lockVersionString, String adminPs, String unlockKey, String adminKeyboardPwd, String deletePwd, String pwdInfo, long timestamp, String aesKeystr, int feature, String modelNumber, String hardwareRevision, String firmwareRevision, Error error) {
-            LogUtil.d("add admin:" + error + "," + "lockVersion--->" + lockVersionString+"battery------>"+extendedBluetoothDevice.getBatteryCapacity(), DBG);
+        public void onLockInitialize(ExtendedBluetoothDevice extendedBluetoothDevice, final LockData lockData, Error error) {
             if(error == Error.SUCCESS) {
-//                operateSuccess = true;
-                final Key key = new Key();
-                key.setAccessToken(MyPreference.getStr(mContext, MyPreference.ACCESS_TOKEN));
-                key.setAdmin(true);
-                key.setLockVersion(lockVersionString);
-                key.setLockName(extendedBluetoothDevice.getName());
-                key.setLockMac(extendedBluetoothDevice.getAddress());
-                key.setAdminPs(adminPs);
-                key.setUnlockKey(unlockKey);
-                key.setAdminKeyboardPwd(adminKeyboardPwd);
-                key.setDeletePwd(deletePwd);
-                key.setPwdInfo(pwdInfo);
-                key.setTimestamp(timestamp);
-                key.setAesKeystr(aesKeystr);
-                key.setSpecialValue(feature);
-
-                //The offset between your time zone and UTC, in millisecond
-                key.setTimezoneRawOffset(TimeZone.getDefault().getOffset(System.currentTimeMillis()));
-                key.setModelNumber(modelNumber);
-                key.setHardwareRevision(hardwareRevision);
-                key.setFirmwareRevision(firmwareRevision);
+                final String lockDataJson = lockData.toJson();
+//                Key key = GsonUtil.toObject(lockDataJson, Key.class);
+//                key.setAccessToken(MyPreference.getStr(mContext, MyPreference.ACCESS_TOKEN));
+//                key.setAdmin(true);
 
                 toast(getString(R.string.words_lock_add_successed_and_init));
 
@@ -230,7 +218,7 @@ public class MyApplication extends Application {
                     @Override
                     protected Boolean  doInBackground(Void... params) {
                         Boolean flag = false;
-                        String json = ResponseService.lockInit(key);
+                        String json = ResponseService.lockInit(lockDataJson, lockData.getLockName());
                         try {
                             JSONObject jsonObject = new JSONObject(json);
                             if(jsonObject.has("errcode")) {
@@ -260,6 +248,37 @@ public class MyApplication extends Application {
                 toast(error.getErrorMsg());
             }
         }
+
+        @Override
+        public void onReadDeviceInfo(ExtendedBluetoothDevice extendedBluetoothDevice, DeviceInfo deviceInfo, Error error) {
+
+        }
+
+        @Override
+        public void onOperateRemoteControl(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, Error error) {
+
+        }
+
+        @Override
+        public void onOperateDoorSensorLocking(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, Error error) {
+
+        }
+
+        @Override
+        public void onGetDoorSensorState(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, Error error) {
+
+        }
+
+        @Override
+        public void onSetNBServer(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+
+        }
+
+//        @Override
+//        public void onAddAdministrator(ExtendedBluetoothDevice extendedBluetoothDevice, String lockVersionString, String adminPs, String unlockKey, String adminKeyboardPwd, String deletePwd, String pwdInfo, long timestamp, String aesKeystr, int feature, String modelNumber, String hardwareRevision, String firmwareRevision, Error error) {
+//            LogUtil.d("add admin:" + error + "," + "lockVersion--->" + lockVersionString+"battery------>"+extendedBluetoothDevice.getBatteryCapacity(), DBG);
+//
+//        }
 
         @Override
         public void onResetEKey(ExtendedBluetoothDevice extendedBluetoothDevice, final int lockFlagPos, Error error) {
@@ -302,7 +321,7 @@ public class MyApplication extends Application {
         public void onSetAdminKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, String adminCode, Error error) {
             if(error == Error.SUCCESS) {
 //                operateSuccess = true;
-                curKey.setAdminKeyboardPwd(adminCode);
+                curKey.setNoKeyPwd(adminCode);
                 DbService.updateKey(curKey);
                 toast(getString(R.string.words_set_admin_code_successed) + adminCode);
             } else toast(error.getErrorMsg());
@@ -549,10 +568,10 @@ public class MyApplication extends Application {
 
         }
 
-        @Override
-        public void onReadDeviceInfo(ExtendedBluetoothDevice extendedBluetoothDevice, String modelNumber, String hardwareRevision, String firmwareRevision, String manufactureDate, String lockClock) {
-
-        }
+//        @Override
+//        public void onReadDeviceInfo(ExtendedBluetoothDevice extendedBluetoothDevice, String modelNumber, String hardwareRevision, String firmwareRevision, String manufactureDate, String lockClock) {
+//
+//        }
 
         @Override
         public void onEnterDFUMode(ExtendedBluetoothDevice extendedBluetoothDevice, Error error) {

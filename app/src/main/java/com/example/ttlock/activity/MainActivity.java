@@ -24,12 +24,13 @@ import com.example.ttlock.R;
 import com.example.ttlock.adapter.KeyAdapter;
 import com.example.ttlock.dao.DbService;
 import com.example.ttlock.model.Key;
+import com.example.ttlock.model.KeyObj;
 import com.example.ttlock.net.ResponseService;
-import com.example.ttlock.sp.MyPreference;
+import com.google.gson.reflect.TypeToken;
 import com.ttlock.bl.sdk.api.TTLockAPI;
+import com.ttlock.bl.sdk.util.GsonUtil;
 import com.ttlock.bl.sdk.util.LogUtil;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -177,14 +178,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 @Override
                 protected String doInBackground(Void... params) {
-                    //delete local key
-                    DbService.deleteKey(key);
                     String json = ResponseService.deleteKey(key.getKeyId());
                     String msg = "";
                     try {
                         JSONObject jsonObject = new JSONObject(json);
                         if(jsonObject.getInt("errcode") == 0) {
                             msg = getString(R.string.words_delete_ekey_successed);
+                            //delete local key
+                            DbService.deleteKey(key);
                         } else msg = jsonObject.getString("description");
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -292,61 +293,63 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     //use lastUpdateDate you can get the newly added key and data after the time
                     long lastUpdateDate = jsonObject.getLong("lastUpdateDate");
                     String keyList = jsonObject.getString("keyList");
-                    JSONArray jsonArray = jsonObject.getJSONArray("keyList");
+//                    JSONArray jsonArray = jsonObject.getJSONArray("keyList");
                     keys.clear();
-                    for(int i = 0;i<jsonArray.length();i++) {
-                        jsonObject = (JSONObject) jsonArray.get(i);
-                        int keyId = jsonObject.getInt("keyId");
-                        int lockId = jsonObject.getInt("lockId");
-                        String userType = jsonObject.getString("userType");
-                        String keyStatus = jsonObject.getString("keyStatus");
-                        String lockName = jsonObject.getString("lockName");
-                        String lockAlias = jsonObject.getString("lockAlias");
-                        String lockKey = jsonObject.getString("lockKey");
-                        String lockMac = jsonObject.getString("lockMac");
-                        int lockFlagPos = jsonObject.getInt("lockFlagPos");
-                        String adminPwd = "";
-                        if (jsonObject.has("adminPwd"))
-                            adminPwd = jsonObject.getString("adminPwd");
-                        String noKeyPwd = "";
-                        if (jsonObject.has("noKeyPwd"))
-                            noKeyPwd = jsonObject.getString("noKeyPwd");
-                        String deletePwd = "";
-                        if (jsonObject.has("deletePwd"))
-                            deletePwd = jsonObject.getString("deletePwd");
-                        int electricQuantity = jsonObject.getInt("electricQuantity");
-                        String aesKeyStr = jsonObject.getString("aesKeyStr");
-                        String lockVersion = jsonObject.getString("lockVersion");
-                        long startDate = jsonObject.getLong("startDate");
-                        long endDate = jsonObject.getLong("endDate");
-                        String remarks = jsonObject.getString("remarks");
-                        int timezoneRawOffset = jsonObject.getInt("timezoneRawOffset");
-
-                        Key key = new Key();
-                        key.setKeyId(keyId);
-                        key.setLockId(lockId);
-                        key.setAdminPs(adminPwd);
-                        key.setAdminKeyboardPwd(noKeyPwd);
-                        key.setDeletePwd(deletePwd);
-                        key.setKeyStatus(keyStatus);
-                        key.setAdmin("110301".equals(userType) ? true : false);
-                        key.setAccessToken(MyPreference.getStr(MainActivity.this, MyPreference.ACCESS_TOKEN));
-                        key.setLockFlagPos(lockFlagPos);
-                        key.setLockId(lockId);
-                        key.setKeyId(keyId);
-                        key.setLockMac(lockMac);
-                        key.setLockName(lockName);
-                        key.setLockAlias(lockAlias);
-                        key.setUnlockKey(lockKey);
-                        key.setLockVersion(lockVersion);
-                        key.setBattery(electricQuantity);
-                        key.setStartDate(startDate);
-                        key.setEndDate(endDate);
-                        key.setAesKeystr(aesKeyStr);
-                        key.setTimezoneRawOffset(timezoneRawOffset);
-                        keys.add(key);
-//                        DbService.saveKey(key);
-                    }
+                    ArrayList<KeyObj> list = GsonUtil.toObject(keyList, new TypeToken<ArrayList<KeyObj>>(){});
+                    keys.addAll(convert2DbModel(list));
+//                    for(int i = 0;i<jsonArray.length();i++) {
+//                        jsonObject = (JSONObject) jsonArray.get(i);
+//                        int keyId = jsonObject.getInt("keyId");
+//                        int lockId = jsonObject.getInt("lockId");
+//                        String userType = jsonObject.getString("userType");
+//                        String keyStatus = jsonObject.getString("keyStatus");
+//                        String lockName = jsonObject.getString("lockName");
+//                        String lockAlias = jsonObject.getString("lockAlias");
+//                        String lockKey = jsonObject.getString("lockKey");
+//                        String lockMac = jsonObject.getString("lockMac");
+//                        int lockFlagPos = jsonObject.getInt("lockFlagPos");
+//                        String adminPwd = "";
+//                        if (jsonObject.has("adminPwd"))
+//                            adminPwd = jsonObject.getString("adminPwd");
+//                        String noKeyPwd = "";
+//                        if (jsonObject.has("noKeyPwd"))
+//                            noKeyPwd = jsonObject.getString("noKeyPwd");
+//                        String deletePwd = "";
+//                        if (jsonObject.has("deletePwd"))
+//                            deletePwd = jsonObject.getString("deletePwd");
+//                        int electricQuantity = jsonObject.getInt("electricQuantity");
+//                        String aesKeyStr = jsonObject.getString("aesKeyStr");
+//                        String lockVersion = jsonObject.getString("lockVersion");
+//                        long startDate = jsonObject.getLong("startDate");
+//                        long endDate = jsonObject.getLong("endDate");
+//                        String remarks = jsonObject.getString("remarks");
+//                        int timezoneRawOffset = jsonObject.getInt("timezoneRawOffset");
+//
+//                        Key key = new Key();
+//                        key.setKeyId(keyId);
+//                        key.setLockId(lockId);
+//                        key.setAdminPs(adminPwd);
+//                        key.setAdminKeyboardPwd(noKeyPwd);
+//                        key.setDeletePwd(deletePwd);
+//                        key.setKeyStatus(keyStatus);
+//                        key.setAdmin("110301".equals(userType));
+//                        key.setAccessToken(MyPreference.getStr(MainActivity.this, MyPreference.ACCESS_TOKEN));
+//                        key.setLockFlagPos(lockFlagPos);
+//                        key.setLockId(lockId);
+//                        key.setKeyId(keyId);
+//                        key.setLockMac(lockMac);
+//                        key.setLockName(lockName);
+//                        key.setLockAlias(lockAlias);
+//                        key.setUnlockKey(lockKey);
+//                        key.setLockVersion(lockVersion);
+//                        key.setBattery(electricQuantity);
+//                        key.setStartDate(startDate);
+//                        key.setEndDate(endDate);
+//                        key.setAesKeystr(aesKeyStr);
+//                        key.setTimezoneRawOffset(timezoneRawOffset);
+//                        keys.add(key);
+////                        DbService.saveKey(key);
+//                    }
 
                     //clear local keys and save new keys
                     DbService.deleteAllKey();
@@ -367,5 +370,42 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 listView.setOnCreateContextMenuListener(MainActivity.this);
             }
         }.execute();
+    }
+
+    private static ArrayList<Key> convert2DbModel(ArrayList<KeyObj> list){
+        ArrayList<Key> keyList = new ArrayList<>();
+        if(list != null && list.size() > 0){
+            for(KeyObj key : list){
+                Key DbKey = new Key();
+                DbKey.setUserType(key.userType);
+                DbKey.setKeyStatus(key.keyStatus);
+                DbKey.setLockId(key.lockId);
+                DbKey.setKeyId(key.keyId);
+                DbKey.setLockVersion(GsonUtil.toJson(key.lockVersion));
+                DbKey.setLockName(key.lockName);
+                DbKey.setLockAlias(key.lockAlias);
+                DbKey.setLockMac(key.lockMac);
+                DbKey.setElectricQuantity(key.electricQuantity);
+                DbKey.setLockFlagPos(key.lockFlagPos);
+                DbKey.setAdminPwd(key.adminPwd);
+                DbKey.setLockKey(key.lockKey);
+                DbKey.setNoKeyPwd(key.noKeyPwd);
+                DbKey.setDeletePwd(key.deletePwd);
+                DbKey.setPwdInfo(key.pwdInfo);
+                DbKey.setTimestamp(key.timestamp);
+                DbKey.setAesKeyStr(key.aesKeyStr);
+                DbKey.setStartDate(key.startDate);
+                DbKey.setEndDate(key.endDate);
+                DbKey.setSpecialValue(key.specialValue);
+                DbKey.setTimezoneRawOffset(key.timezoneRawOffset);
+                DbKey.setKeyRight(key.keyRight);
+                DbKey.setKeyboardPwdVersion(key.keyboardPwdVersion);
+                DbKey.setRemoteEnable(key.remoteEnable);
+                DbKey.setRemarks(key.remarks);
+
+                keyList.add(DbKey);
+            }
+        }
+        return keyList;
     }
 }

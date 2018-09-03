@@ -69,9 +69,9 @@ public class OperateActivity extends BaseActivity {
             case Operate.CLICK_TO_UNLOCK://click to unlock
                 if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call interface directly
                     if(mKey.isAdmin())
-                        mTTLockAPI.unlockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPwd(), mKey.getLockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeyStr(), mKey.getTimezoneRawOffset());
                     else
-                        mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getLockKey(), mKey.getLockFlagPos(), mKey.getAesKeyStr(), mKey.getTimezoneRawOffset());
                 } else {//to connect the lock
                     showProgressDialog(getString(R.string.words_wait));
                     mTTLockAPI.connect(mKey.getLockMac());
@@ -86,9 +86,9 @@ public class OperateActivity extends BaseActivity {
             case Operate.LOCKCAR_UP://Parking Lock up
                 if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call interface directly
                     if(mKey.isAdmin())
-                        mTTLockAPI.lockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr());
+                        mTTLockAPI.lockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPwd(), mKey.getLockKey(), mKey.getLockFlagPos(), mKey.getAesKeyStr());
                     else
-                        mTTLockAPI.lockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.lockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getLockKey(), mKey.getLockFlagPos(), mKey.getAesKeyStr(), mKey.getTimezoneRawOffset());
 //                    MyApplication.mTTLockAPI.lockByUser(null, 0, mKey.getLockVersion(), 1489990922165l, 1490077322165l, mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                 } else {
                     showProgressDialog(getString(R.string.words_wait));
@@ -100,9 +100,9 @@ public class OperateActivity extends BaseActivity {
             case Operate.LOCKCAR_DOWN://Parking Lock down
                 if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call interface directly
                     if(mKey.isAdmin())
-                        mTTLockAPI.unlockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPs(), mKey.getUnlockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByAdministrator(null, openid, mKey.getLockVersion(), mKey.getAdminPwd(), mKey.getLockKey(), mKey.getLockFlagPos(), System.currentTimeMillis(), mKey.getAesKeyStr(), mKey.getTimezoneRawOffset());
                     else
-                        mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
+                        mTTLockAPI.unlockByUser(null, openid, mKey.getLockVersion(), mKey.getStartDate(), mKey.getEndDate(), mKey.getLockKey(), mKey.getLockFlagPos(), mKey.getAesKeyStr(), mKey.getTimezoneRawOffset());
 //                    MyApplication.mTTLockAPI.unlockByUser(null, 0, mKey.getLockVersion(), 1489990922165l, 1490077322165l, mKey.getUnlockKey(), mKey.getLockFlagPos(), mKey.getAesKeystr(), mKey.getTimezoneRawOffset());
                 } else {
                     showProgressDialog(getString(R.string.words_wait));
@@ -164,7 +164,7 @@ public class OperateActivity extends BaseActivity {
                 switch (operate) {
                     case Operate.SET_ADMIN_CODE:
                         if(mTTLockAPI.isConnected(mKey.getLockMac())) {
-                            mTTLockAPI.setAdminKeyboardPassword(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr(), content);
+                            mTTLockAPI.setAdminKeyboardPassword(null, openid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr(), content);
                         } else {
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.SET_ADMIN_KEYBOARD_PASSWORD);
@@ -179,7 +179,7 @@ public class OperateActivity extends BaseActivity {
                         break;
                     case Operate.SET_LOCK_TIME:
                         if(mTTLockAPI.isConnected(mKey.getLockMac())) {
-                            mTTLockAPI.setLockTime(null, openid, curKey.getLockVersion(), curKey.getUnlockKey(), System.currentTimeMillis(), curKey.getLockFlagPos(), curKey.getAesKeystr(), curKey.getTimezoneRawOffset());
+                            mTTLockAPI.setLockTime(null, openid, curKey.getLockVersion(), curKey.getLockKey(), System.currentTimeMillis(), curKey.getLockFlagPos(), curKey.getAesKeyStr(), curKey.getTimezoneRawOffset());
                         } else {
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.SET_LOCK_TIME);
@@ -188,7 +188,7 @@ public class OperateActivity extends BaseActivity {
                         break;
                     case Operate.RESET_KEYBOARD_PASSWORD:
                         if(mTTLockAPI.isConnected(mKey.getLockMac())) {
-                            mTTLockAPI.resetKeyboardPassword(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos(), curKey.getAesKeystr());
+                            mTTLockAPI.resetKeyboardPassword(null, openid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr());
                         } else {
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.RESET_KEYBOARD_PASSWORD);
@@ -197,7 +197,7 @@ public class OperateActivity extends BaseActivity {
                         break;
                     case Operate.RESET_EKEY:
                         if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call resetEKey interface directly
-                            mTTLockAPI.resetEKey(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
+                            mTTLockAPI.resetEKey(null, openid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockFlagPos() + 1, curKey.getAesKeyStr());
                         } else {//to connect the lock and set the operation flag
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.RESET_EKEY);
@@ -206,7 +206,7 @@ public class OperateActivity extends BaseActivity {
                         break;
                     case Operate.RESET_LOCK:
                         if(mTTLockAPI.isConnected(mKey.getLockMac())) {//If the lock is connected, you can call resetLock interface directly
-                            mTTLockAPI.resetLock(null, openid, curKey.getLockVersion(), curKey.getAdminPs(), curKey.getUnlockKey(), curKey.getLockFlagPos() + 1, curKey.getAesKeystr());
+                            mTTLockAPI.resetLock(null, openid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos() + 1, curKey.getAesKeyStr());
                         } else {//to connect the lock and set the operation flag
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.RESET_LOCK);
@@ -215,7 +215,7 @@ public class OperateActivity extends BaseActivity {
                         break;
                     case Operate.GET_OPERATE_LOG:
                         if(mTTLockAPI.isConnected(mKey.getLockMac())) {
-                            mTTLockAPI.getOperateLog(null, curKey.getLockVersion(), curKey.getAesKeystr(), curKey.getTimezoneRawOffset());
+                            mTTLockAPI.getOperateLog(null, curKey.getLockVersion(), curKey.getAesKeyStr(), curKey.getTimezoneRawOffset());
                         } else {
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.GET_OPERATE_LOG);
@@ -224,7 +224,7 @@ public class OperateActivity extends BaseActivity {
                         break;
                     case Operate.GET_LOCK_TIME:
                         if(mTTLockAPI.isConnected(mKey.getLockMac())) {
-                            mTTLockAPI.getLockTime(null, curKey.getLockVersion(), curKey.getAesKeystr(), curKey.getTimezoneRawOffset());
+                            mTTLockAPI.getLockTime(null, curKey.getLockVersion(), curKey.getAesKeyStr(), curKey.getTimezoneRawOffset());
                         } else {
                             mTTLockAPI.connect(mKey.getLockMac());
                             bleSession.setOperation(Operation.GET_LOCK_TIME);

@@ -614,7 +614,7 @@ public class WheelView extends View {
 		/*/ Modified by wulianghuan 2014-11-25
 		int height = (int)(1.5 * getItemHeight());
 		//*/
-		int height = (int)(3 * getItemHeight());
+		int height = 3 * getItemHeight();
 		//*/
 //		topShadow.setBounds(0, 0, getWidth(), height);
 //		topShadow.draw(canvas);

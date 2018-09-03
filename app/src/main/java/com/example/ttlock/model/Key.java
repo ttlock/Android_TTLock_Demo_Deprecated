@@ -1,25 +1,29 @@
 package com.example.ttlock.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+
+import java.io.Serializable;
 
 /**
  * Created by Administrator on 2016/9/6 0006.
  */
 @Entity
-public class Key implements Parcelable {
+public class Key implements Serializable {
 
     @Id
     private Long id;
 
+//    /**
+//     * access token
+//     */
+//    private String accessToken;
+
     /**
-     * access token
+     * ekey type:110301-admin ekey, 110302-common user ekey
      */
-    private String accessToken;
+    private String userType;
 
     /**
      * key status
@@ -41,10 +45,10 @@ public class Key implements Parcelable {
      */
     private int keyId;
 
-    /**
-     * judge whether it is an administrator
-     */
-    private boolean isAdmin;
+//    /**
+//     * judge whether it is an administrator
+//     */
+//    private boolean isAdmin;
 
     /**
      * lock version information(json format)
@@ -69,7 +73,7 @@ public class Key implements Parcelable {
     /**
      * battery
      */
-    private int battery;
+    private int electricQuantity;
 
     /**
      * lock flag position
@@ -80,17 +84,17 @@ public class Key implements Parcelable {
      *  admin code, which only belongs to the admin ekey, will be used to verify the admin permission.
      *
      */
-    private String adminPs;
+    private String adminPwd;
 
     /**
      * The key data which will be used to unlock
      */
-    private String unlockKey;
+    private String lockKey;
 
     /**
      * Super passcode, which only belongs to the admin ekey, can be entered on the keypad to unlock
      */
-    private String adminKeyboardPwd;
+    private String noKeyPwd;
 
     /**
      * Erasing passcode,which belongs to old locks, has been abandoned. Please don't use it.
@@ -110,7 +114,7 @@ public class Key implements Parcelable {
     /**
      * aesKey
      */
-    private String aesKeystr;
+    private String aesKeyStr;
 
     /**
      * The time when it becomes valid
@@ -133,9 +137,29 @@ public class Key implements Parcelable {
     private int timezoneRawOffset;
 
     /**
+     * Is key authorized:0-NO,1-yes
+     */
+    private int keyRight;
+
+    /**
+     * Passcode version: 0、1、2、3、4
+     */
+    private int keyboardPwdVersion;
+
+    /**
+     * is support remote unlock: 1 - yes 、 2 - no
+     */
+    private int remoteEnable;
+
+    /**
+     * Comment
+     */
+    private String remarks;
+
+    /**
      * Product model
      */
-    private String modelNumber;
+    private String modelNum;
 
     /**
      * Hardware version
@@ -145,43 +169,49 @@ public class Key implements Parcelable {
     /**
      * Firmware version
      */
-    String firmwareRevision;
+    private String firmwareRevision;
 
-    @Generated(hash = 124450289)
-    public Key(Long id, String accessToken, String keyStatus, int lockId, int keyId, boolean isAdmin, String lockVersion, String lockName,
-            String lockAlias, String lockMac, int battery, int lockFlagPos, String adminPs, String unlockKey, String adminKeyboardPwd, String deletePwd,
-            String pwdInfo, long timestamp, String aesKeystr, long startDate, long endDate, int specialValue, int timezoneRawOffset, String modelNumber,
-            String hardwareRevision, String firmwareRevision) {
+
+    @Generated(hash = 2076226027)
+    public Key() {
+    }
+
+    @Generated(hash = 1626650047)
+    public Key(Long id, String userType, String keyStatus, int lockId, int keyId, String lockVersion,
+            String lockName, String lockAlias, String lockMac, int electricQuantity, int lockFlagPos,
+            String adminPwd, String lockKey, String noKeyPwd, String deletePwd, String pwdInfo,
+            long timestamp, String aesKeyStr, long startDate, long endDate, int specialValue,
+            int timezoneRawOffset, int keyRight, int keyboardPwdVersion, int remoteEnable,
+            String remarks, String modelNum, String hardwareRevision, String firmwareRevision) {
         this.id = id;
-        this.accessToken = accessToken;
+        this.userType = userType;
         this.keyStatus = keyStatus;
         this.lockId = lockId;
         this.keyId = keyId;
-        this.isAdmin = isAdmin;
         this.lockVersion = lockVersion;
         this.lockName = lockName;
         this.lockAlias = lockAlias;
         this.lockMac = lockMac;
-        this.battery = battery;
+        this.electricQuantity = electricQuantity;
         this.lockFlagPos = lockFlagPos;
-        this.adminPs = adminPs;
-        this.unlockKey = unlockKey;
-        this.adminKeyboardPwd = adminKeyboardPwd;
+        this.adminPwd = adminPwd;
+        this.lockKey = lockKey;
+        this.noKeyPwd = noKeyPwd;
         this.deletePwd = deletePwd;
         this.pwdInfo = pwdInfo;
         this.timestamp = timestamp;
-        this.aesKeystr = aesKeystr;
+        this.aesKeyStr = aesKeyStr;
         this.startDate = startDate;
         this.endDate = endDate;
         this.specialValue = specialValue;
         this.timezoneRawOffset = timezoneRawOffset;
-        this.modelNumber = modelNumber;
+        this.keyRight = keyRight;
+        this.keyboardPwdVersion = keyboardPwdVersion;
+        this.remoteEnable = remoteEnable;
+        this.remarks = remarks;
+        this.modelNum = modelNum;
         this.hardwareRevision = hardwareRevision;
         this.firmwareRevision = firmwareRevision;
-    }
-
-    @Generated(hash = 2076226027)
-    public Key() {
     }
 
     public Long getId() {
@@ -201,35 +231,11 @@ public class Key implements Parcelable {
     }
 
     public String getLockVersion() {
-        return this.lockVersion;
+        return lockVersion;
     }
 
     public void setLockVersion(String lockVersion) {
         this.lockVersion = lockVersion;
-    }
-
-    public String getAdminPs() {
-        return this.adminPs;
-    }
-
-    public void setAdminPs(String adminPs) {
-        this.adminPs = adminPs;
-    }
-
-    public String getUnlockKey() {
-        return this.unlockKey;
-    }
-
-    public void setUnlockKey(String unlockKey) {
-        this.unlockKey = unlockKey;
-    }
-
-    public String getAdminKeyboardPwd() {
-        return this.adminKeyboardPwd;
-    }
-
-    public void setAdminKeyboardPwd(String adminKeyboardPwd) {
-        this.adminKeyboardPwd = adminKeyboardPwd;
     }
 
     public String getDeletePwd() {
@@ -254,14 +260,6 @@ public class Key implements Parcelable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getAesKeystr() {
-        return this.aesKeystr;
-    }
-
-    public void setAesKeystr(String aesKeystr) {
-        this.aesKeystr = aesKeystr;
     }
 
     public String getLockName() {
@@ -297,57 +295,16 @@ public class Key implements Parcelable {
     }
 
     public boolean isAdmin() {
-        return this.isAdmin;
+        return "110301".equals(userType);
     }
 
-    public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    @Override
-    public String toString() {
-        return "Key{" +
-                "id=" + id +
-                ", lockId=" + lockId +
-                ", keyId=" + keyId +
-                ", isAdmin=" + isAdmin +
-                ", lockVersion='" + lockVersion + '\'' +
-                ", lockName='" + lockName + '\'' +
-                ", lockMac='" + lockMac + '\'' +
-                ", lockFlagPos=" + lockFlagPos +
-                ", adminPs='" + adminPs + '\'' +
-                ", unlockKey='" + unlockKey + '\'' +
-                ", adminKeyboardPwd='" + adminKeyboardPwd + '\'' +
-                ", deletePwd='" + deletePwd + '\'' +
-                ", pwdInfo='" + pwdInfo + '\'' +
-                ", timestamp=" + timestamp +
-                ", aesKeystr='" + aesKeystr + '\'' +
-                '}';
-    }
-
-    public boolean getIsAdmin() {
-        return this.isAdmin;
-    }
-
-    public int getBattery() {
-        return this.battery;
-    }
-
-    public void setBattery(int battery) {
-        this.battery = battery;
-    }
-
-    public String getAccessToken() {
-        return this.accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
+//    public String getAccessToken() {
+//        return this.accessToken;
+//    }
+//
+//    public void setAccessToken(String accessToken) {
+//        this.accessToken = accessToken;
+//    }
 
     public long getStartDate() {
         return this.startDate;
@@ -379,14 +336,6 @@ public class Key implements Parcelable {
 
     public void setTimezoneRawOffset(int timezoneRawOffset) {
         this.timezoneRawOffset = timezoneRawOffset;
-    }
-
-    public String getModelNumber() {
-        return this.modelNumber;
-    }
-
-    public void setModelNumber(String modelNumber) {
-        this.modelNumber = modelNumber;
     }
 
     public String getHardwareRevision() {
@@ -421,79 +370,91 @@ public class Key implements Parcelable {
         this.keyStatus = keyStatus;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public int getElectricQuantity() {
+        return electricQuantity;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeString(this.accessToken);
-        dest.writeString(this.keyStatus);
-        dest.writeInt(this.lockId);
-        dest.writeInt(this.keyId);
-        dest.writeByte(this.isAdmin ? (byte) 1 : (byte) 0);
-        dest.writeString(this.lockVersion);
-        dest.writeString(this.lockName);
-        dest.writeString(this.lockAlias);
-        dest.writeString(this.lockMac);
-        dest.writeInt(this.battery);
-        dest.writeInt(this.lockFlagPos);
-        dest.writeString(this.adminPs);
-        dest.writeString(this.unlockKey);
-        dest.writeString(this.adminKeyboardPwd);
-        dest.writeString(this.deletePwd);
-        dest.writeString(this.pwdInfo);
-        dest.writeLong(this.timestamp);
-        dest.writeString(this.aesKeystr);
-        dest.writeLong(this.startDate);
-        dest.writeLong(this.endDate);
-        dest.writeInt(this.specialValue);
-        dest.writeInt(this.timezoneRawOffset);
-        dest.writeString(this.modelNumber);
-        dest.writeString(this.hardwareRevision);
-        dest.writeString(this.firmwareRevision);
+    public void setElectricQuantity(int electricQuantity) {
+        this.electricQuantity = electricQuantity;
     }
 
-    protected Key(Parcel in) {
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
-        this.accessToken = in.readString();
-        this.keyStatus = in.readString();
-        this.lockId = in.readInt();
-        this.keyId = in.readInt();
-        this.isAdmin = in.readByte() != 0;
-        this.lockVersion = in.readString();
-        this.lockName = in.readString();
-        this.lockAlias = in.readString();
-        this.lockMac = in.readString();
-        this.battery = in.readInt();
-        this.lockFlagPos = in.readInt();
-        this.adminPs = in.readString();
-        this.unlockKey = in.readString();
-        this.adminKeyboardPwd = in.readString();
-        this.deletePwd = in.readString();
-        this.pwdInfo = in.readString();
-        this.timestamp = in.readLong();
-        this.aesKeystr = in.readString();
-        this.startDate = in.readLong();
-        this.endDate = in.readLong();
-        this.specialValue = in.readInt();
-        this.timezoneRawOffset = in.readInt();
-        this.modelNumber = in.readString();
-        this.hardwareRevision = in.readString();
-        this.firmwareRevision = in.readString();
+    public String getAdminPwd() {
+        return adminPwd;
     }
 
-    public static final Parcelable.Creator<Key> CREATOR = new Parcelable.Creator<Key>() {
-        @Override
-        public Key createFromParcel(Parcel source) {
-            return new Key(source);
-        }
+    public void setAdminPwd(String adminPwd) {
+        this.adminPwd = adminPwd;
+    }
 
-        @Override
-        public Key[] newArray(int size) {
-            return new Key[size];
-        }
-    };
+    public String getLockKey() {
+        return lockKey;
+    }
+
+    public void setLockKey(String lockKey) {
+        this.lockKey = lockKey;
+    }
+
+    public String getNoKeyPwd() {
+        return noKeyPwd;
+    }
+
+    public void setNoKeyPwd(String noKeyPwd) {
+        this.noKeyPwd = noKeyPwd;
+    }
+
+    public String getAesKeyStr() {
+        return aesKeyStr;
+    }
+
+    public void setAesKeyStr(String aesKeyStr) {
+        this.aesKeyStr = aesKeyStr;
+    }
+
+    public String getModelNum() {
+        return modelNum;
+    }
+
+    public void setModelNum(String modelNum) {
+        this.modelNum = modelNum;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public int getKeyRight() {
+        return keyRight;
+    }
+
+    public void setKeyRight(int keyRight) {
+        this.keyRight = keyRight;
+    }
+
+    public int getKeyboardPwdVersion() {
+        return keyboardPwdVersion;
+    }
+
+    public void setKeyboardPwdVersion(int keyboardPwdVersion) {
+        this.keyboardPwdVersion = keyboardPwdVersion;
+    }
+
+    public int getRemoteEnable() {
+        return remoteEnable;
+    }
+
+    public void setRemoteEnable(int remoteEnable) {
+        this.remoteEnable = remoteEnable;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 }
