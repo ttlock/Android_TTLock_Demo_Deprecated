@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ttlock.activity.BaseActivity;
@@ -199,7 +200,7 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onGetLockVersion(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, int i3, int i4, Error error) {
+        public void onGetLockVersion(ExtendedBluetoothDevice extendedBluetoothDevice, int protocolType, int protocolVersion, int scene, int groupId, int orgId, Error error) {
 
         }
 
@@ -207,12 +208,9 @@ public class MyApplication extends Application {
         public void onLockInitialize(ExtendedBluetoothDevice extendedBluetoothDevice, final LockData lockData, Error error) {
             if(error == Error.SUCCESS) {
                 final String lockDataJson = lockData.toJson();
-//                Key key = GsonUtil.toObject(lockDataJson, Key.class);
-//                key.setAccessToken(MyPreference.getStr(mContext, MyPreference.ACCESS_TOKEN));
-//                key.setAdmin(true);
 
                 toast(getString(R.string.words_lock_add_successed_and_init));
-
+                mTTLockAPI.unlockByAdministrator(null, 0, lockData.lockVersion, lockData.adminPwd, lockData.lockKey, lockData.lockFlagPos, System.currentTimeMillis(), lockData.aesKeyStr, lockData.timezoneRawOffset);
                 new AsyncTask<Void, String, Boolean>() {
 
                     @Override
@@ -255,22 +253,22 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onOperateRemoteControl(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, Error error) {
+        public void onOperateRemoteControl(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int operateType, int keyValue, Error error) {
 
         }
 
         @Override
-        public void onOperateDoorSensorLocking(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, Error error) {
+        public void onOperateDoorSensorLocking(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int operationType, int operationValue, Error error) {
 
         }
 
         @Override
-        public void onGetDoorSensorState(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, Error error) {
+        public void onGetDoorSensorState(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int state, Error error) {
 
         }
 
         @Override
-        public void onSetNBServer(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+        public void onSetNBServer(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
 
         }
 
@@ -313,7 +311,7 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onSetLockName(ExtendedBluetoothDevice extendedBluetoothDevice, String s, Error error) {
+        public void onSetLockName(ExtendedBluetoothDevice extendedBluetoothDevice, String lockname, Error error) {
 
         }
 
@@ -402,17 +400,18 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onSetMaxNumberOfKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+        public void onSetMaxNumberOfKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int validPwdNum, Error error) {
 
         }
 
         @Override
-        public void onResetKeyboardPasswordProgress(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+        public void onResetKeyboardPasswordProgress(ExtendedBluetoothDevice extendedBluetoothDevice, int progress, Error error) {
 
         }
 
         @Override
         public void onResetLock(ExtendedBluetoothDevice extendedBluetoothDevice, Error error) {
+            Log.d("reset", "error:" + error);
             if(error == Error.SUCCESS) {
                 toast(getString(R.string.words_lock_reset_key_invalid));
             } else toast(error.getErrorMsg());
@@ -484,7 +483,7 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onSearchDeviceFeature(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, Error error) {
+        public void onSearchDeviceFeature(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int specialValue, Error error) {
 
         }
 
@@ -509,7 +508,7 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onSetWristbandKeyToLock(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+        public void onSetWristbandKeyToLock(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
 
         }
 
@@ -559,12 +558,12 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onSearchAutoLockTime(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, int i3, Error error) {
+        public void onSearchAutoLockTime(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int currentTime, int minTime, int maxTime, Error error) {
 
         }
 
         @Override
-        public void onModifyAutoLockTime(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, Error error) {
+        public void onModifyAutoLockTime(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int autoLockTime, Error error) {
 
         }
 
@@ -579,7 +578,7 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onGetLockSwitchState(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, Error error) {
+        public void onGetLockSwitchState(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int status, Error error) {
 
         }
 
@@ -592,37 +591,37 @@ public class MyApplication extends Application {
         }
 
         @Override
-        public void onScreenPasscodeOperate(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, Error error) {
+        public void onScreenPasscodeOperate(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int status, Error error) {
 
         }
 
         @Override
-        public void onRecoveryData(ExtendedBluetoothDevice extendedBluetoothDevice, int i, Error error) {
+        public void onRecoveryData(ExtendedBluetoothDevice extendedBluetoothDevice, int op, Error error) {
 
         }
 
         @Override
-        public void onSearchICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, Error error) {
+        public void onSearchICCard(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, String json, Error error) {
 
         }
 
         @Override
-        public void onSearchFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, Error error) {
+        public void onSearchFingerPrint(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, String json, Error error) {
 
         }
 
         @Override
-        public void onSearchPasscode(ExtendedBluetoothDevice extendedBluetoothDevice, String s, Error error) {
+        public void onSearchPasscode(ExtendedBluetoothDevice extendedBluetoothDevice, String json, Error error) {
 
         }
 
         @Override
-        public void onSearchPasscodeParam(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, long l, Error error) {
+        public void onSearchPasscodeParam(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, String pwdInfo, long timestamp, Error error) {
 
         }
 
         @Override
-        public void onOperateRemoteUnlockSwitch(ExtendedBluetoothDevice extendedBluetoothDevice, int i, int i1, int i2, int i3, Error error) {
+        public void onOperateRemoteUnlockSwitch(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int operateType, int state, int specialValue, Error error) {
 
         }
 
@@ -633,6 +632,11 @@ public class MyApplication extends Application {
 
         @Override
         public void onGetElectricQuantity(ExtendedBluetoothDevice extendedBluetoothDevice, int electricQuantity, Error error) {
+
+        }
+
+        @Override
+        public void onGetAdminKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, String adminCode, Error error) {
 
         }
 

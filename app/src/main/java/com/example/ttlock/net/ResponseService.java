@@ -15,8 +15,6 @@ import java.util.HashMap;
 public class ResponseService {
     private static final String TAG = "ResponseService";
     private static String actionUrl = "https://api.ttlock.com.cn";
-//    private static String actionUrl = "http://120.26.119.23:8085";
-    private static String actionUrlV2 = actionUrl + "/v2";
     private static String actionUrlV3 = actionUrl + "/v3";
 
     /**
