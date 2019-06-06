@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.example.ttlock"
         minSdkVersion 18
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         ndk {
@@ -50,39 +50,30 @@ android {
 }
 
 //指定编译的编码
-tasks.withType(JavaCompile){
-    options.encoding = "UTF-8"
-}
+//tasks.withType(JavaCompile){
+//    options.encoding = "UTF-8"
+//}
 
-def supportVersion = "26.1.0"
+def supportVersion = "28.0.0"
 
 dependencies {
-    provided fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-//    compile fileTree(include: ['*.jar'], dir: 'libs')
-        compile "com.android.support:appcompat-v7:${supportVersion}"
-        compile "com.android.support:design:${supportVersion}"
-    compile "com.android.support:percent:${supportVersion}"
+    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:${supportVersion}"
+    implementation "com.android.support:design:${supportVersion}"
+    implementation "com.android.support:percent:${supportVersion}"
     implementation "com.android.support:support-v4:${supportVersion}"
     //ttlock SDK
-    compile(name: 'ttlock-sdk-2.0', ext: 'aar')
-    compile(name: 'ttlock-gateway-sdk-2.0', ext: 'aar')
-    //greenDao
-    // This is only needed if you want to use encrypted databases
-    //okhttp
-    //TODO:gson
-    compile project(path: ':pickerview')
-//    compile 'com.android.support:appcompat-v7:25.1.0'
-//    compile 'com.android.support:design:25.1.0'
-    compile 'org.greenrobot:greendao:3.1.1'
-    compile'org.greenrobot:greendao-generator:3.1.0'
-//    compile 'org.greenrobot:greendao-generator-encryption:2.2.0'
-    compile 'net.zetetic:android-database-sqlcipher:3.4.0'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    //DeviceFirmwareUpdateApi need dfu dependency
-    compile 'no.nordicsemi.android:dfu:1.1.1'
-    testCompile 'junit:junit:4.12'
+//    implementation(name: 'ttlock-sdk-2.0.0', ext: 'aar')
+//    implementation(name: 'ttlock-gateway-sdk-2.0.0', ext: 'aar')
+    implementation project(path: ':pickerview')
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'org.greenrobot:greendao-generator:3.2.2'
+    implementation 'net.zetetic:android-database-sqlcipher:3.4.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.4.1'
+    implementation 'com.google.code.gson:gson:2.6.2'
+    implementation 'com.jakewharton:butterknife:8.5.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'no.nordicsemi.android:dfu:1.1.1'
+    testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

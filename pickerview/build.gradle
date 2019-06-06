@@ -5,12 +5,12 @@ apply plugin: 'com.jfrog.bintray'
 version = "2.1.0"
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode 3
         versionName "2.1.0"
     }
@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    provided fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 def siteUrl = 'https://github.com/saiwu-bigkoo/Android-PickerView'                        // #CONFIG# // project homepage

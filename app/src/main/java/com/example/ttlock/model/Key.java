@@ -12,6 +12,8 @@ import java.io.Serializable;
 @Entity
 public class Key implements Serializable {
 
+    public static final long serialVersionUID = 536871008;
+
     @Id
     private Long id;
 

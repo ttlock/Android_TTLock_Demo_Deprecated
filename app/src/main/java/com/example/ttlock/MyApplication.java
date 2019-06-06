@@ -640,6 +640,26 @@ public class MyApplication extends Application {
 
         }
 
+        @Override
+        public void onQueryPassageMode(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, String passageModeData, Error error) {
+
+        }
+
+        @Override
+        public void onAddOrModifyPassageMode(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
+
+        }
+
+        @Override
+        public void onDeletePassageMode(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
+
+        }
+
+        @Override
+        public void onClearPassageMode(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
+
+        }
+
     };
 
     ActivityLifecycleCallbacks callbacks = new ActivityLifecycleCallbacks() {
