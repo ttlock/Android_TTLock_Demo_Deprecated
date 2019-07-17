@@ -35,12 +35,17 @@ public class DbService {
      */
     public static Key getKeyByLockmac(String lockmac) {
         queryBuilder = keyDao.queryBuilder();
-       List<Key> keys = queryBuilder.where(KeyDao.Properties.LockMac.eq(lockmac)).list();
-        if(keys.size() > 0) {
+        try {
+            List<Key> keys = queryBuilder.where(KeyDao.Properties.LockMac.eq(lockmac)).list();
+            if(keys.size() > 0) {
 //            LogUtil.d("keys.size():" + keys.size(), DBG);
 //            LogUtil.d("key:" + keys.get(0).toString(), DBG);
-            return keys.get(0);
-        } else return null;
+                return keys.get(0);
+            } else return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

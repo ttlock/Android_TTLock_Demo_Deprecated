@@ -120,6 +120,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissions == null || grantResults == null || permissions.length == 0 || grantResults.length == 0) {
+            return;
+        }
         if(requestCode == REQUEST_PERMISSION_REQ_CODE) {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if(Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0]))

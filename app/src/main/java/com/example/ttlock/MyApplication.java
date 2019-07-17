@@ -144,7 +144,7 @@ public class MyApplication extends Application {
                     mTTLockAPI.setDeletePassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr(), bleSession.getPassword());
                     break;
                 case SET_LOCK_TIME:
-                    mTTLockAPI.setLockTime(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), System.currentTimeMillis(), curKey.getLockFlagPos(), curKey.getAesKeyStr(), curKey.getTimezoneRawOffset());
+                    mTTLockAPI.setLockTime(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getLockKey(), System.currentTimeMillis(), curKey.getLockFlagPos(), curKey.getAesKeyStr(), curKey.getTimezoneRawOffset());
                     break;
                 case RESET_KEYBOARD_PASSWORD:
                     mTTLockAPI.resetKeyboardPassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr());
@@ -660,6 +660,26 @@ public class MyApplication extends Application {
 
         }
 
+        @Override
+        public void onSetLockFreezeState(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
+
+        }
+
+        @Override
+        public void onGetLockFreezeState(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, boolean isOn, Error error) {
+
+        }
+
+        @Override
+        public void onSetLightTime(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, Error error) {
+
+        }
+
+        @Override
+        public void onGetLightTime(ExtendedBluetoothDevice extendedBluetoothDevice, int battery, int time, Error error) {
+
+        }
+
     };
 
     ActivityLifecycleCallbacks callbacks = new ActivityLifecycleCallbacks() {
@@ -733,6 +753,7 @@ public class MyApplication extends Application {
      */
     private void initTTLock() {
         LogUtil.d("create TTLockAPI", DBG);
+        LogUtil.setDBG(true);
         mTTLockAPI = new TTLockAPI(mContext, mTTLockCallback);
     }
 
